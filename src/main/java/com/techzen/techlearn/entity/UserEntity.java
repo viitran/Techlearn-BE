@@ -2,6 +2,7 @@ package com.techzen.techlearn.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity{
 

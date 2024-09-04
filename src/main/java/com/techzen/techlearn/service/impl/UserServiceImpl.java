@@ -17,7 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,13 +63,13 @@ public class UserServiceImpl implements UserService {
     public PageResponse<?> getAllUser(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
-        Page<UserResponseDTO> users = userRepository.findAllUser(pageable);
-
+        Page<UserEntity> users = userRepository.findAll(pageable);
+        List<UserResponseDTO> list = users.map(userMapper::toUserResponseDTO).stream().collect(Collectors.toList());
         return PageResponse.builder()
                 .page(page)
                 .pageSize(pageSize)
                 .totalPage(users.getTotalPages())
-                .items(users.getContent())
+                .items(list)
                 .build();
     }
 }
