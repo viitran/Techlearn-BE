@@ -8,7 +8,6 @@ import biweekly.property.Method;
 import biweekly.property.Trigger;
 import biweekly.util.Duration;
 import com.techzen.techlearn.dto.CalendarDTO;
-import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.service.MailService;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
@@ -144,6 +143,15 @@ public class GmailServiceImpl implements MailService {
         VAlarm alarm = VAlarm.email(trigger, "Reminder for your meeting", "", calendarDto.getAttendees());
         alarm.setDescription("This is reminder for your meeting: " + calendarDto.getSummary());
         event.addAlarm(alarm);
+
+//        VAlarm alarm = new VAlarm(new Duration.Builder().minutes(-5).build());
+//        alarm.setDescription("This is a reminder that the event is starting soon.");
+//        event.addAlarm(alarm);
+//
+//        for (String email : calendarDto.getAttendees()) {
+//            Attendee attendee = new Attendee(email);
+//            event.addAttendee(attendee);
+//        }
 
         icalendar.addEvent(event);
         return Biweekly.write(icalendar).go();

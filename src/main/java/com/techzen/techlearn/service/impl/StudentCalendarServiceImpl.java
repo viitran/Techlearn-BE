@@ -126,8 +126,7 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
         TeacherCalendar calendar = studentCalendarRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED)
         );
-        calendar.setStatus(CalendarStatus.FREE);
-        calendar.setUser(null);
+        calendar.setStatus(CalendarStatus.CANCELLED);
         return teacherCalendarMapper.toDTO(studentCalendarRepository.save(calendar));
     }
 
