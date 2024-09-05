@@ -22,7 +22,7 @@ public class GitHubLinkEntity extends BaseEntity{
     private String url;
 
     @Column(name = "decription")
-    private Integer age;
+    private String decription;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
