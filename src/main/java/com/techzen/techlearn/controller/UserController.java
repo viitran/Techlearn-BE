@@ -92,7 +92,7 @@ public class UserController {
                     .description("Hello I'm Tuan dep trai nhat the gioi") // Mô tả của sự kiện
                     .summary("Summary of the meeting")
                     .meetingLink("https://example.com/meeting")
-                    .eventDateTime(LocalDateTime.now().plusDays(1)) // (1 ngày sau)
+                    .eventDateTime(LocalDateTime.now().plusMinutes(10)) // (10p sau) // LocalDateTime.of(2024, 09, 05, 14, 30)) Ngày cụ thể: 05/09/2024 lúc 14:30
                     .build();
             mailService.sendScheduleSuccessEmail(calendarDTO);
         } catch (MessagingException | IOException e) {
