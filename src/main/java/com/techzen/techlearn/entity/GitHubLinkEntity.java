@@ -21,9 +21,6 @@ public class GitHubLinkEntity extends BaseEntity{
     @Column(name = "url")
     private String url;
 
-    @Column(name = "decription")
-    private String decription;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 }

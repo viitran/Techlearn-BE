@@ -50,7 +50,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
-    public ResponseData<?> updateUser(@PathVariable Long id, @RequestBody ReviewRequestDTO request) {
+    public ResponseData<?> updateReview(@PathVariable Long id, @RequestBody ReviewRequestDTO request) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())

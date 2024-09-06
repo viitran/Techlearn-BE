@@ -61,7 +61,7 @@ public class GitHubLinkController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseData<?> deleteUser(@PathVariable Long id) {
+    public ResponseData<?> deleteGitHubLink(@PathVariable Long id) {
         gitHubLinkService.deleteGitHubLink(id);
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())

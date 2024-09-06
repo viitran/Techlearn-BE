@@ -9,8 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GitHubLinkRequestDTO {
-    @NotBlank(message = "url")
+    @NotBlank(message = "url shouldn't empty")
     String url;
-    @NotBlank(message = "decription")
-    String decription;
 }

@@ -21,9 +21,6 @@ public class ReviewEntity extends BaseEntity{
     @Column(name = "content")
     private String content;
 
-    @Column(name = "rating")
-    private Integer rating;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 }

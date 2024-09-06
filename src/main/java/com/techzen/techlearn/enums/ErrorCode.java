@@ -27,7 +27,8 @@ public enum ErrorCode {
     UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
     INVALID_DATA(1014, "Invalid data", HttpStatus.BAD_REQUEST),
     FULL_NAME_INVALID(1014, "Full name must be not blank", HttpStatus.BAD_REQUEST),
-    ;
+    REVIEW_NOT_FOUND(1015, "Review not found", HttpStatus.BAD_REQUEST),
+    GITHUBLINK_NOT_FOUND(1016, "GitHubLink not found", HttpStatus.BAD_REQUEST);
 
     Integer code;
     String message;

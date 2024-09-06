@@ -9,8 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReviewRequestDTO {
-    @NotBlank(message = "content")
+    @NotBlank(message = "content shouldn't empty")
     String content;
-    @NotBlank(message = "rating")
-    Integer rating;
 }

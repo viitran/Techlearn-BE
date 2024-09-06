@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 public class GitHubLinkResponseDTO implements Serializable {
     Long id;
     String url;
-    String description;
     String createdBy;
     LocalDateTime createdDate;
     String modifiedBy;

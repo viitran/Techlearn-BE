@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 public class ReviewResponseDTO implements Serializable {
     Long id;
     String content;
-    int rating;
     String createdBy;
     LocalDateTime createdDate;
     String modifiedBy;

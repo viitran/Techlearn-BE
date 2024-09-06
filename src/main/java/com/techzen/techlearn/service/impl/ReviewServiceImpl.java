@@ -30,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewResponseDTO getReviewById(Long id) {
-        ReviewEntity review = reviewRepository.findReviewById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        ReviewEntity review = reviewRepository.findReviewById(id).orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
         return reviewMapper.toReviewResponseDTO(review);
     }
 
@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewResponseDTO updateReview(Long id, ReviewRequestDTO request) {
-        reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
         var reviewMap = reviewMapper.toReviewEntity(request);
         reviewMap.setId(id);
         reviewMap.setIsDeleted(false);
@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long id) {
-        var review = reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        var review = reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
         review.setIsDeleted(true);
         reviewRepository.save(review);
     }
