@@ -28,13 +28,14 @@ public class UserEntity extends BaseEntity{
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<QuestionEntity> questions;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<SubmissionEntity> submissions;
+    private List<SubmitEntity> submissions;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<SubmitFeedbackEntity> feedBacks;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

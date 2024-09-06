@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,8 +17,8 @@ import java.util.UUID;
 @Table(name = "tbl_assignment")
 public class AssignmentEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -31,13 +30,13 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "course_id")
     private CourseEntity course;
 
+//    @OneToMany(mappedBy = "assignment")
+//    @JsonIgnore
+//    List<QuestionEntity> questions;
+
     @OneToMany(mappedBy = "assignment")
     @JsonIgnore
-    List<QuestionEntity> questions;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "submission_id")
-    private SubmissionEntity submission;
+    private List<SubmitEntity> submissions;
 
     @ManyToMany
     @JoinTable(
@@ -45,6 +44,14 @@ public class AssignmentEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     List<UserEntity> users;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chapter_id")
+    private ChapterEntity chapter;
+
+    @OneToMany(mappedBy = "assignment")
+    @JsonIgnore
+    private List<SubmitFeedbackEntity> feedBacks;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

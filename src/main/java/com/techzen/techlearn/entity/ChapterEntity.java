@@ -14,30 +14,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Where(clause = "is_deleted = false")
-@Table(name = "tbl_course")
-public class CourseEntity extends BaseEntity{
+@Table(name = "tbl_chapter")
+public class ChapterEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "description", columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    private List<SubmitEntity> submissions;
+    @Column(name = "position")
+    private int position;
 
-    @OneToMany(mappedBy = "course")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private CourseEntity course;
+
+    @OneToMany(mappedBy = "chapter")
     @JsonIgnore
     private List<AssignmentEntity> assignments;
-
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    private List<ChapterEntity> chapters;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

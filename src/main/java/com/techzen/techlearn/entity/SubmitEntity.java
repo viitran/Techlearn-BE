@@ -1,14 +1,9 @@
 package com.techzen.techlearn.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.techzen.techlearn.enums.SubmissionStatus;
+import com.techzen.techlearn.enums.SubmitStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
-import org.hibernate.type.internal.ImmutableNamedBasicTypeImpl;
-
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,18 +13,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Where(clause = "is_deleted = false")
 @Table(name = "tbl_submission")
-public class SubmissionEntity extends BaseEntity{
+public class SubmitEntity extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @Column(name = "link")
     private String link;
 
     @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
-    private SubmissionStatus status;
+    private SubmitStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
@@ -39,9 +34,9 @@ public class SubmissionEntity extends BaseEntity{
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "submission")
-    @JsonIgnore
-    private List<AssignmentEntity> assignments;
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name = "assignment_id")
+     private AssignmentEntity assignment;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
