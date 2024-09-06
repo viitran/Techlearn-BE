@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
