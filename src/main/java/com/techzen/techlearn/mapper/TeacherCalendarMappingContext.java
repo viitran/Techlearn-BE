@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MappingContext {
+public class TeacherCalendarMappingContext {
     TeacherRepository teacherRepository;
     CalendarRepository calendarRepository;
 }

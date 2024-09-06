@@ -5,10 +5,9 @@ import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO;
 import com.techzen.techlearn.entity.CalendarEntity;
 import com.techzen.techlearn.entity.TeacherCalendarEntity;
 import com.techzen.techlearn.entity.TeacherEntity;
-import com.techzen.techlearn.entity.TechnicalEntity;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.exception.AppException;
-import com.techzen.techlearn.mapper.MappingContext;
+import com.techzen.techlearn.mapper.TeacherCalendarMappingContext;
 import com.techzen.techlearn.mapper.TeacherCalendarMapper;
 import com.techzen.techlearn.repository.CalendarRepository;
 import com.techzen.techlearn.repository.TeacherCalendarRepository;
@@ -28,7 +27,7 @@ import java.util.UUID;
 public class TeacherCalendarServiceImpl implements TeacherCalendarService {
     TeacherCalendarRepository teacherCalendarRepository;
     TeacherCalendarMapper teacherCalendarMapper;
-    MappingContext mappingContext;
+    TeacherCalendarMappingContext teacherCalendarMappingContext;
     TeacherRepository teacherRepository;
     CalendarRepository calendarRepository;
 
@@ -46,7 +45,7 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         if (teacherCalendarRepository.existsByTeacherAndCalendarAndDateAppointment(teacher, calendar, dateAppointment)) {
             throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
         }
-        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request,mappingContext);
+        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request, teacherCalendarMappingContext);
         entity.setTeacher(teacher);
         entity.setCalendar(calendar);
         entity.setDateAppointment(dateAppointment);

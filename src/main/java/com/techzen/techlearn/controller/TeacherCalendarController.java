@@ -24,8 +24,6 @@ public class TeacherCalendarController {
 
     @PostMapping
     public ResponseData<?> addTeacherCalendar(@RequestBody @Valid TeacherCalendarRequestDTO request) {
-        System.out.println(request.getIdTeacher());
-        System.out.println(request.getIdTime());
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.ADD_SUCCESSFUL.getCode())
