@@ -15,11 +15,10 @@ import java.util.UUID;
 public class TechnicalEntity {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @JoinColumn(name = "name")
+    @Column(name = "name")
     private String name;
 
     @ManyToOne

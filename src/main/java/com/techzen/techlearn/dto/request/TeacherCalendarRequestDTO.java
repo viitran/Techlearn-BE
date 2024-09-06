@@ -1,5 +1,6 @@
 package com.techzen.techlearn.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -16,9 +17,9 @@ import java.util.UUID;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherCalendarRequestDTO {
-    private UUID idTeacher;
-    private UUID idTime;
-    private LocalDate dateAppointment;
-    private String status;
-    private String note;
+    String idTime;
+    String idTeacher;
+    String dateAppointment;
+    String status;
+    String note;
 }

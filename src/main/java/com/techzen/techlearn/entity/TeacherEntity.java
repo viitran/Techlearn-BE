@@ -15,13 +15,16 @@ import java.util.UUID;
 public class TeacherEntity {
 
     @Id
-    @JoinColumn(columnDefinition = "BINARY(16)")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @JoinColumn(name = "name")
+    @Column(name = "name")
     private String name;
 
-    @JoinColumn(name = "avatar")
+    @Column(name = "avatar")
     private String avatar;
+
+    public TeacherEntity(UUID id) {
+        this.id = id;
+    }
 }

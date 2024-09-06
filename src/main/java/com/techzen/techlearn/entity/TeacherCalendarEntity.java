@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -13,29 +14,28 @@ import java.time.LocalDate;
 @Table(name = "teacher_calendar")
 public class TeacherCalendarEntity {
 
-    @EmbeddedId
-    private TeacherCalendarId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
-    @MapsId("idTeacher")
     @JoinColumn(name = "id_teacher")
     private TeacherEntity teacher;
 
     @ManyToOne
-    @MapsId("idTime")
     @JoinColumn(name = "id_time")
     private CalendarEntity calendar;
 
-    @JoinColumn(name = "date_appointment")
+    @Column(name = "date_appointment")
     private LocalDate dateAppointment;
 
-    @JoinColumn(name = "status")
+    @Column(name = "status")
     private String status;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserEntity user;
 
-    @JoinColumn(name = "note")
+    @Column(name = "note")
     private String note;
 }

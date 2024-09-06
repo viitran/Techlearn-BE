@@ -2,24 +2,38 @@ package com.techzen.techlearn.mapper;
 
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO;
+import com.techzen.techlearn.entity.CalendarEntity;
 import com.techzen.techlearn.entity.TeacherCalendarEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import com.techzen.techlearn.entity.TeacherEntity;
+import org.mapstruct.*;
+
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface TeacherCalendarMapper {
 
     @Mappings({
-            @Mapping(target = "id.idTeacher", source = "idTeacher"),
-            @Mapping(target = "id.idTime", source = "idTime"),
-            @Mapping(target = "dateAppointment", source = "dateAppointment"),
-            @Mapping(target = "status", source = "status"),
-            @Mapping(target = "note", source = "note"),
-            @Mapping(target = "teacher.id", source = "idTeacher"),
-            @Mapping(target = "calendar.id", source = "idTime")
+            @Mapping(target = "calendar", source = "idTime", qualifiedByName = "mapToCalendarEntity"),
+            @Mapping(target = "teacher", source = "idTeacher", qualifiedByName = "mapToTeacherEntity")
     })
-    TeacherCalendarEntity toTeacherCalendarEntity(TeacherCalendarRequestDTO dto);
+    TeacherCalendarEntity toTeacherCalendarEntity(TeacherCalendarRequestDTO dto, @Context MappingContext context);
 
+    @Mappings({
+            @Mapping(target = "idTeacher", source = "teacher.id"),
+            @Mapping(target = "idTime", source = "calendar.id")
+    })
     TeacherCalendarResponseDTO toTeacherCalendarResponseDTO(TeacherCalendarEntity entity);
+
+    @Named("mapToCalendarEntity")
+    default CalendarEntity mapToCalendarEntity(String idTime, @Context MappingContext context) {
+        return context.getCalendarRepository().findById(Integer.parseInt(idTime))
+                .orElseThrow(() -> new RuntimeException("Time not found"));
+    }
+
+    @Named("mapToTeacherEntity")
+    default TeacherEntity mapToTeacherEntity(String idTeacher, @Context MappingContext context) {
+        return context.getTeacherRepository().findById(UUID.fromString(idTeacher))
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+    }
 }
+

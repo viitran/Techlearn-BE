@@ -17,13 +17,16 @@ import java.util.UUID;
 @Table(name = "calendar")
 public class CalendarEntity {
         @Id
-        @JoinColumn(columnDefinition = "BINARY(16)")
-        @GeneratedValue(strategy = GenerationType.UUID)
-        private UUID id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Integer id;
 
-        @JoinColumn(name = "time_start")
+        @Column(name = "time_start")
         private Time timeStart;
 
-        @JoinColumn(name = "time_end")
+        @Column(name = "time_end")
         private Time timeEnd;
+
+        public CalendarEntity(Integer idTime) {
+                this.id = idTime;
+        }
 }
