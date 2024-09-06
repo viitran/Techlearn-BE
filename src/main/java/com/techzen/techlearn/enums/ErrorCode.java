@@ -26,7 +26,9 @@ public enum ErrorCode {
     DELETE_SUCCESSFUL(1012, "Delete successful", HttpStatus.OK),
     UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
     INVALID_DATA(1014, "Invalid data", HttpStatus.BAD_REQUEST),
-    FULL_NAME_INVALID(1014, "Full name must be not blank", HttpStatus.BAD_REQUEST),
+    FULL_NAME_INVALID(1015, "Full name must be not blank", HttpStatus.BAD_REQUEST),
+    PROMPT_STRUCTURE(1016, "Prompt structure must be not blank", HttpStatus.BAD_REQUEST),
+    PROMPT_STRUCTURE_NOT_FOUND(1017, "Prompt structure not found", HttpStatus.BAD_REQUEST),
     ;
 
     Integer code;
