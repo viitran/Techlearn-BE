@@ -15,26 +15,30 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Where(clause = "is_deleted = false")
-@Table(name = "tbl_user")
-public class UserEntity extends BaseEntity{
+@Table(name = "tbl_course")
+public class CourseEntity extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(name = "description")
+    private String description;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<QuestionEntity> questions;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id")
+    private TeacherEntity teacher;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "course")
     @JsonIgnore
     private List<SubmissionEntity> submissions;
+
+    @OneToMany(mappedBy = "course")
+    @JsonIgnore
+    private List<AssignmentEntity> assignments;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

@@ -12,3 +12,5 @@ CREATE TABLE tbl_user
     is_deleted    BIT(1)       NULL,
     CONSTRAINT pk_tbl_user PRIMARY KEY (id)
 );
+
+ALTER TABLE tbl_user ADD COLUMN test VARCHAR(255);
