@@ -37,9 +37,5 @@ public interface TeacherCalendarMapper {
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-
-
 }
 
