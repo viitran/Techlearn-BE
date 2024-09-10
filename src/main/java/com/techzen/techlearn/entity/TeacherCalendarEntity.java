@@ -2,9 +2,8 @@ package com.techzen.techlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
-
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -15,7 +14,6 @@ import java.util.UUID;
 @Where(clause = "is_all_day = false")
 @Table(name = "teacher_calendar")
 public class TeacherCalendarEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,12 +22,14 @@ public class TeacherCalendarEntity {
     @JoinColumn(name = "id_teacher")
     private TeacherEntity teacher;
 
-    @ManyToOne
-    @JoinColumn(name = "id_time")
-    private CalendarEntity calendar;
-
     @Column(name = "date_appointment")
     private LocalDate dateAppointment;
+
+    @Column(name = "time_start")
+    private LocalTime timeStart;
+
+    @Column(name = "time_end")
+    private LocalTime timeEnd;
 
     @Column(name = "status")
     private String status;
