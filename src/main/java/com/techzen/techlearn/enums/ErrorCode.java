@@ -30,6 +30,7 @@ public enum ErrorCode {
     TEACHER_NOT_EXISTED(1015, "Teacher not existed", HttpStatus.NOT_FOUND),
     CALENDAR_NOT_EXISTED(1016, "calendar not existed", HttpStatus.NOT_FOUND),
     TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED(1017, "teacher or calendar or date appointment  existed", HttpStatus.BAD_REQUEST),
+    NAME_TEACHER_OR_TECHNICAL_AND_CURRENT_DATE_NOT_EXISTED(1018, "technical or teacher or current date not existed", HttpStatus.BAD_REQUEST),
     ;
 
     Integer code;

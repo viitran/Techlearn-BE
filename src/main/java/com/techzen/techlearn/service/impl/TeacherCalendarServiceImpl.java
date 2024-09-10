@@ -5,6 +5,7 @@ import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.TeacherCalendarFreeResponseDTO;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO;
 import com.techzen.techlearn.dto.response.UserResponseDTO;
+import com.techzen.techlearn.dto.response.TechnicalTeacherResponseDTO;
 import com.techzen.techlearn.entity.CalendarEntity;
 import com.techzen.techlearn.entity.TeacherCalendarEntity;
 import com.techzen.techlearn.entity.TeacherEntity;
@@ -14,6 +15,7 @@ import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.mapper.ITeacherCalendarMapperFree;
 import com.techzen.techlearn.mapper.TeacherCalendarMappingContext;
 import com.techzen.techlearn.mapper.TeacherCalendarMapper;
+import com.techzen.techlearn.mapper.TechnicalTeacherMapper;
 import com.techzen.techlearn.repository.CalendarRepository;
 import com.techzen.techlearn.repository.TeacherCalendarRepository;
 import com.techzen.techlearn.repository.TeacherRepository;
@@ -41,6 +43,7 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
     TeacherRepository teacherRepository;
     CalendarRepository calendarRepository;
     ITeacherCalendarMapperFree iTeacherCalendarMapperFree;
+    TechnicalTeacherMapper technicalTeacherMapper;
 
     @Override
     public TeacherCalendarResponseDTO addTeacherCalendar(TeacherCalendarRequestDTO request) {
@@ -64,21 +67,6 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         return teacherCalendarMapper.toTeacherCalendarResponseDTO(savedEntity);
     }
 
-//    @Override
-//    public PageResponse<?> getAllTeacherCalendar(int page, int pageSize) {
-//        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
-//        Page<Object[]> resultPage = teacherCalendarRepository.findAllTeacherFree(pageable);
-//        System.out.println(resultPage);
-//        List<TeacherCalendarFreeResponseDTO> list = resultPage.getContent().stream()
-//                .map(iTeacherCalendarMapperFree::toTeacherCalendarFreeResponseDTO)
-//                .collect(Collectors.toList());
-//        return PageResponse.builder()
-//                .page(page)
-//                .pageSize(pageSize)
-//                .totalPage(resultPage.getTotalPages())
-//                .items(list)
-//                .build();
-//    }
     @Override
     public List<TeacherCalendarFreeResponseDTO> getAllTeacherCalendar() {
         List<Object[]> resultList = teacherCalendarRepository.findAllTeacherFree();
@@ -88,4 +76,13 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<TechnicalTeacherResponseDTO> findAppointments(String technicalName, String teacherName) {
+        List<TeacherCalendarEntity> teacherCalendars = teacherCalendarRepository.findAppointmentsByTechnicalAndTeacher(technicalName, teacherName);
+        if (teacherCalendars.isEmpty())
+            throw new AppException(ErrorCode.NAME_TEACHER_OR_TECHNICAL_AND_CURRENT_DATE_NOT_EXISTED);
+        return teacherCalendars.stream()
+                .map(technicalTeacherMapper.INSTANCE::toTechnicalTeacherResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
