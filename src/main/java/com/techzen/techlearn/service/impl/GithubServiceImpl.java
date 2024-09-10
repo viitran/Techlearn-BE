@@ -21,6 +21,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -78,19 +80,22 @@ public class GithubServiceImpl implements GithubService {
         return githubDTOList;
     }
 
-
     private String getAPILink(String linkGithub) {
         if (!linkGithub.startsWith("https://github.com/")) {
             throw new AppException(ErrorCode.GITHUB_NOT_FOUND);
         }
         String[] urlParts = linkGithub.split("/");
+        if (urlParts.length < 7) {
+            throw new AppException(ErrorCode.GITHUB_NOT_FOUND);
+        }
         String owner = urlParts[3];
         String repo = urlParts[4];
         String branch = urlParts[6];
         String path = String.join("/", Arrays.copyOfRange(urlParts, 7, urlParts.length));
 
         return GITHUB_API_URL.replace("{owner}", owner)
-                .replace("{repo}", repo).replace("{path}", path)
+                .replace("{repo}", repo)
+                .replace("{path}", path)
                 .replace("{branch}", branch);
     }
 
@@ -98,7 +103,17 @@ public class GithubServiceImpl implements GithubService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "token " + githubToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-        return responseEntity.getBody();
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().value() == 404) {
+                throw new AppException(ErrorCode.GITHUB_NOT_FOUND);
+            } else {
+                throw new AppException(ErrorCode.GITHUB_API_ERROR);
+            }
+        } catch (RestClientException e) {
+            throw new AppException(ErrorCode.GITHUB_API_ERROR);
+        }
     }
 }
