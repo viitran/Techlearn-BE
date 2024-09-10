@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GithubResponseDTO {
     String name;
-    String path;
+//    String path;
 //    String sha;
 //    String size;
 //    String url;

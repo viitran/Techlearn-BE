@@ -45,6 +45,7 @@ public class GithubServiceImpl implements GithubService {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(request).replace("\"", "'");
         var description = reviewConfigRepository.findTopByOrderByIdDesc().getPromptStructure();
+        String u = description + jsonString;
         return AIService.callAPI(description + jsonString);
     }
 

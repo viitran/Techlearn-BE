@@ -31,6 +31,7 @@ public enum ErrorCode {
     PROMPT_STRUCTURE_NOT_FOUND(1017, "Prompt structure not found", HttpStatus.BAD_REQUEST),
     GITHUB_LINK(1018, "Github link must be not blank", HttpStatus.BAD_REQUEST),
     GITHUB_NOT_FOUND(1019, "URL is not a valid GitHub URL! ", HttpStatus.BAD_REQUEST),
+    REVIEW_NOT_FOUND(1020, "Review not found", HttpStatus.BAD_REQUEST),
     ;
 
     Integer code;

@@ -9,13 +9,14 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
 @Primary
 @Service("rapid")
 public class RapidAPIService implements AIService {
     @Override
     public String callAPI(String mess) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://chatgpt-42.p.rapidapi.com/chatgpt"))
+                .uri(URI.create("https://chatgpt-42.p.rapidapi.com/gpt4"))
                 .header("x-rapidapi-key", "4c5205c5aemsh54e9f600c1c69c7p1dad90jsn9d56ef2040c7")
                 .header("x-rapidapi-host", "chatgpt-42.p.rapidapi.com")
                 .header("Content-Type", "application/json")
