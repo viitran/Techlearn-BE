@@ -9,10 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,4 +28,17 @@ public class TeacherCalendarController {
                 .result(teacherCalendarService.addTeacherCalendar(request))
                 .build();
     }
+
+
+    @GetMapping
+    public ResponseData<?> getAppointmentsByTechnicalAndTeacher(@RequestParam String nameTechnical,
+                                                                @RequestParam String nameTeacher) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(teacherCalendarService.findAppointments(nameTechnical, nameTeacher))
+                .build();
+    }
+
 }
