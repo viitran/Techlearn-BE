@@ -38,4 +38,8 @@ public class TeacherCalendarEntity {
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "is_all_day")
+    private String isAllDay;
+
 }

@@ -7,6 +7,7 @@ import com.techzen.techlearn.entity.TeacherCalendarEntity;
 import com.techzen.techlearn.entity.TeacherEntity;
 import org.mapstruct.*;
 
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
@@ -35,5 +36,10 @@ public interface TeacherCalendarMapper {
         return context.getTeacherRepository().findById(UUID.fromString(idTeacher))
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+
+
 }
 
