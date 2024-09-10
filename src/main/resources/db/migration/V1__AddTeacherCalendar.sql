@@ -22,7 +22,7 @@ CREATE TABLE teacher_calendar
     status           VARCHAR (50) NOT NULL,
     id_user          BINARY(16),
     note             VARCHAR(255),
-    is_all_day       BIT(1) NULL,
+    is_all_day       BIT(1) DEFAULT FALSE,
     FOREIGN KEY (id_teacher) REFERENCES teacher (id),
     FOREIGN KEY (id_user) REFERENCES tbl_user (id)
 );

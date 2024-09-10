@@ -42,10 +42,11 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         LocalDate dateAppointment = LocalDate.parse(request.getDateAppointment());
         LocalTime timeStart = LocalTime.parse(request.getTimeStart());
         LocalTime timeEnd = LocalTime.parse(request.getTimeEnd());
+
         TeacherEntity teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
-
-        if (teacherCalendarRepository.existsByTeacherAndDateAppointment(teacher,dateAppointment)) {
+        System.out.println(teacher);
+        if (teacherCalendarRepository.existsByTeacherAndDateAppointmentAndTimeStartAndTimeEnd(teacher,dateAppointment,timeStart,timeEnd)) {
             throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
         }
 

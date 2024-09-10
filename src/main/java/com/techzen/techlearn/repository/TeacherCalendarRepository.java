@@ -12,9 +12,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 @Repository
-public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendarEntity, UUID> {
+public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendarEntity, Integer> {
 
-    boolean existsByTeacherAndDateAppointment(TeacherEntity teacher, LocalDate dateAppointment);
+    boolean existsByTeacherAndDateAppointmentAndTimeStartAndTimeEnd(TeacherEntity teacher, LocalDate dateAppointment,LocalTime timeStart, LocalTime timeEnd);
 
     @Query("SELECT tc " +
             "FROM TeacherCalendarEntity tc " +
@@ -27,4 +27,6 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
     List<TeacherCalendarEntity> findAppointmentsByTechnicalAndTeacher(
             @Param("technicalName") String technicalName,
             @Param("teacherName") String teacherName);
+
+
 }
