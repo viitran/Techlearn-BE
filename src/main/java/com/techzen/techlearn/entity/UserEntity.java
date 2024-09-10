@@ -1,9 +1,11 @@
 package com.techzen.techlearn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +27,15 @@ public class UserEntity extends BaseEntity{
 
     @Column(name = "age")
     private Integer age;
+
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<SubmitEntity> submissions;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<SubmitFeedbackEntity> feedBacks;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
