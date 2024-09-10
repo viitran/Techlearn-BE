@@ -64,18 +64,28 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         return teacherCalendarMapper.toTeacherCalendarResponseDTO(savedEntity);
     }
 
+//    @Override
+//    public PageResponse<?> getAllTeacherCalendar(int page, int pageSize) {
+//        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
+//        Page<Object[]> resultPage = teacherCalendarRepository.findAllTeacherFree(pageable);
+//        System.out.println(resultPage);
+//        List<TeacherCalendarFreeResponseDTO> list = resultPage.getContent().stream()
+//                .map(iTeacherCalendarMapperFree::toTeacherCalendarFreeResponseDTO)
+//                .collect(Collectors.toList());
+//        return PageResponse.builder()
+//                .page(page)
+//                .pageSize(pageSize)
+//                .totalPage(resultPage.getTotalPages())
+//                .items(list)
+//                .build();
+//    }
     @Override
-    public PageResponse<?> getAllTeacherCalendar(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
-        Page<Object[]> resultPage = teacherCalendarRepository.findAllTeacherFree(pageable);
-        List<TeacherCalendarFreeResponseDTO> list = resultPage.getContent().stream()
+    public List<TeacherCalendarFreeResponseDTO> getAllTeacherCalendar() {
+        List<Object[]> resultList = teacherCalendarRepository.findAllTeacherFree();
+        System.out.println(resultList);
+        return resultList.stream()
                 .map(iTeacherCalendarMapperFree::toTeacherCalendarFreeResponseDTO)
                 .collect(Collectors.toList());
-        return PageResponse.builder()
-                .page(page)
-                .pageSize(pageSize)
-                .totalPage(resultPage.getTotalPages())
-                .items(list)
-                .build();
     }
+
 }

@@ -1,6 +1,7 @@
 package com.techzen.techlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_all_day = false")
 @Table(name = "teacher_calendar")
 public class TeacherCalendarEntity {
 
@@ -38,4 +40,7 @@ public class TeacherCalendarEntity {
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "is_all_day")
+    private Boolean isAllDay;
 }

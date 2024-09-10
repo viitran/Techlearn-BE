@@ -13,9 +13,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherCalendarFreeResponseDTO {
+    //    String name;
+//    Time timeStart;
+//    Time timeEnd;
+//    LocalDate dateAppointment;
+//    Boolean isAllDay;
     String name;
-    Time timeStart;
-    Time timeEnd;
-    LocalDate dateAppointment;
-
+    String timeStart;
+    String timeEnd;
+    String dateAppointment;
+    String isAllDay;
 }
