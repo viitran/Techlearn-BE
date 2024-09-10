@@ -27,6 +27,9 @@ public enum ErrorCode {
     UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
     INVALID_DATA(1014, "Invalid data", HttpStatus.BAD_REQUEST),
     FULL_NAME_INVALID(1014, "Full name must be not blank", HttpStatus.BAD_REQUEST),
+    TEACHER_NOT_EXISTED(1015, "Teacher not existed", HttpStatus.NOT_FOUND),
+    CALENDAR_NOT_EXISTED(1016, "calendar not existed", HttpStatus.NOT_FOUND),
+    TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED(1017, "teacher or calendar or date appointment  existed", HttpStatus.BAD_REQUEST),
     ;
 
     Integer code;

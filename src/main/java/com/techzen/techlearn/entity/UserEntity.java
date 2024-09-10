@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +16,6 @@ import java.util.UUID;
 @Where(clause = "is_deleted = false")
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity{
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

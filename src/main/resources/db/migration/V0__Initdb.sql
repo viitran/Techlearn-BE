@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS techlearn;
 CREATE TABLE tbl_user
 (
     id            BINARY(16)   NOT NULL,
-    created_by    VARCHAR(255) NULL,
+    created_by    VARCHAR(255)  NULL,
     created_date  datetime     NULL,
     modified_date datetime     NULL,
     modified_by   VARCHAR(255) NULL,
@@ -12,3 +12,4 @@ CREATE TABLE tbl_user
     is_deleted    BIT(1)       NULL,
     CONSTRAINT pk_tbl_user PRIMARY KEY (id)
 );
+
