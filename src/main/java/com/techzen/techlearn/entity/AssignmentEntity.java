@@ -30,17 +30,13 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "course_id")
     private CourseEntity course;
 
-//    @OneToMany(mappedBy = "assignment")
-//    @JsonIgnore
-//    List<QuestionEntity> questions;
-
     @OneToMany(mappedBy = "assignment")
     @JsonIgnore
     private List<SubmitEntity> submissions;
 
     @ManyToMany
     @JoinTable(
-            name = "assignment_user",
+            name = "tbl_assignment_user",
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     List<UserEntity> users;

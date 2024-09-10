@@ -23,7 +23,7 @@ public class SubmitEntity extends BaseEntity{
     private String link;
 
     @Column(name = "status")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private SubmitStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)

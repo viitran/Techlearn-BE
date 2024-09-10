@@ -5,7 +5,7 @@ import com.techzen.techlearn.dto.response.GitHubLinkResponseDTO;
 import com.techzen.techlearn.entity.GitHubLinkEntity;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface GitHubLinkMapper {
     GitHubLinkEntity toGitHubLinkEntity(GitHubLinkRequestDTO githublinkRequestDTO);
 

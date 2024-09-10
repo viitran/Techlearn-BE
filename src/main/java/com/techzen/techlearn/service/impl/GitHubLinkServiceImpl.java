@@ -30,7 +30,7 @@ public class GitHubLinkServiceImpl implements GitHubLinkService {
 
     @Override
     public GitHubLinkResponseDTO getGitHubLinkById(Long id) {
-        GitHubLinkEntity githublink = githublinkRepository.findGitHubLinkById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUBLINK_NOT_FOUND));
+        GitHubLinkEntity githublink = githublinkRepository.findGitHubLinkById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUB_NOT_FOUND));
         return githublinkMapper.toGitHubLinkResponseDTO(githublink);
     }
 
@@ -44,7 +44,7 @@ public class GitHubLinkServiceImpl implements GitHubLinkService {
 
     @Override
     public GitHubLinkResponseDTO updateGitHubLink(Long id, GitHubLinkRequestDTO request) {
-        githublinkRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUBLINK_NOT_FOUND));
+        githublinkRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUB_NOT_FOUND));
         var githublinkMap = githublinkMapper.toGitHubLinkEntity(request);
         githublinkMap.setId(id);
         githublinkMap.setIsDeleted(false);
@@ -53,14 +53,13 @@ public class GitHubLinkServiceImpl implements GitHubLinkService {
 
     @Override
     public void deleteGitHubLink(Long id) {
-        var githublink = githublinkRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUBLINK_NOT_FOUND));
+        var githublink = githublinkRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GITHUB_NOT_FOUND));
         githublink.setIsDeleted(true);
         githublinkRepository.save(githublink);
     }
 
     @Override
     public PageResponse<?> getAllGitHubLink(int page, int pageSize) {
-
         Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
         Page<GitHubLinkEntity> githublinks = githublinkRepository.findAll(pageable);
         List<GitHubLinkResponseDTO> list = githublinks.map(githublinkMapper::toGitHubLinkResponseDTO).stream().collect(Collectors.toList());

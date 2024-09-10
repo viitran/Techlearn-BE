@@ -5,7 +5,7 @@ import com.techzen.techlearn.dto.response.ReviewResponseDTO;
 import com.techzen.techlearn.entity.ReviewEntity;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ReviewMapper {
     ReviewEntity toReviewEntity(ReviewRequestDTO reviewRequestDTO);
 
