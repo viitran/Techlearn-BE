@@ -5,6 +5,7 @@ CREATE TABLE teacher
     avatar VARCHAR(250) NOT NULL,
     color  VARCHAR(250) NOT NULL
 );
+
 CREATE TABLE technical_teacher
 (
     id         INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -12,6 +13,7 @@ CREATE TABLE technical_teacher
     id_teacher BINARY(16) NOT NULL,
     FOREIGN KEY (id_teacher) REFERENCES teacher (id)
 );
+
 CREATE TABLE teacher_calendar
 (
     id               INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -23,6 +25,7 @@ CREATE TABLE teacher_calendar
     id_user          BINARY(16),
     note             VARCHAR(255),
     is_all_day       BIT(1) DEFAULT FALSE,
+    title            VARCHAR(255),
     FOREIGN KEY (id_teacher) REFERENCES teacher (id),
     FOREIGN KEY (id_user) REFERENCES tbl_user (id)
 );
