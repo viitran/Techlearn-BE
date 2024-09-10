@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "is_all_day = false")
 @Table(name = "teacher_calendar")
 public class TeacherCalendarEntity {
     @Id
