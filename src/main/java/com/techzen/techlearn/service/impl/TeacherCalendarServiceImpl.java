@@ -42,30 +42,19 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         LocalDate dateAppointment = LocalDate.parse(request.getDateAppointment());
         LocalTime timeStart = LocalTime.parse(request.getTimeStart());
         LocalTime timeEnd = LocalTime.parse(request.getTimeEnd());
-
-        // Kiểm tra sự tồn tại của giáo viên
         TeacherEntity teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
 
-        // Kiểm tra sự tồn tại của cuộc hẹn
-        boolean isAppointmentExists = teacherCalendarRepository.existsByTeacherAndDateAppointment(teacher, dateAppointment);
-        System.out.println("Teacher ID: " + teacherId);
-        System.out.println("Date Appointment: " + dateAppointment);
-        System.out.println("Appointment Exists: " + isAppointmentExists);
-
-        if (isAppointmentExists) {
+        if (teacherCalendarRepository.existsByTeacherAndDateAppointment(teacher,dateAppointment)) {
             throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
         }
 
-        // Kiểm tra tính hợp lệ của ngày cuộc hẹn
-        if (dateAppointment.isBefore(LocalDate.now())) {
+        if (dateAppointment.isBefore(LocalDate.now()))
             throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
-        }
 
-        // Kiểm tra tính hợp lệ của thời gian bắt đầu và thời gian kết thúc
         if (timeStart.isBefore(LocalTime.now())) {
             throw new AppException(ErrorCode.TIME_START_SUITABLE);
-        } else if (timeStart.until(timeEnd, ChronoUnit.MINUTES) != 10) {
+        }else if (timeStart.until(timeEnd, ChronoUnit.MINUTES) != 10){
             throw new AppException(ErrorCode.TIME_NOT_SUITABLE);
         }
 
@@ -73,12 +62,8 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
         entity.setTeacher(teacher);
         entity.setDateAppointment(dateAppointment);
         TeacherCalendarEntity savedEntity = teacherCalendarRepository.save(entity);
-
         return teacherCalendarMapper.toTeacherCalendarResponseDTO(savedEntity);
     }
-
-
-
 
     @Override
     public List<TechnicalTeacherResponseDTO> findAppointments(String technicalName, String teacherName) {
