@@ -20,7 +20,7 @@ import java.util.UUID;
 @Repository
 public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendarEntity, Integer> {
 
-    boolean existsByTeacherAndDateAppointmentAndTimeStartAndTimeEnd(TeacherEntity teacher, LocalDate dateAppointment,LocalTime timeStart, LocalTime timeEnd);
+    boolean existsByTeacherAndDateAppointmentAndTimeStart(TeacherEntity teacher, LocalDate dateAppointment,LocalTime timeStart);
 
     @Query(nativeQuery = true, value = "select teacher.name, calendar.time_start, calendar.time_end, " +
             "teacher_calendar.date_appointment, teacher_calendar.is_all_day \n" +

@@ -14,4 +14,6 @@ public interface TeacherCalendarService {
     List<?> getAllTeacherCalendar();
 
     List<TechnicalTeacherResponseDTO> findAppointments(String technicalName, String teacherName);
+
+    List<TeacherCalendarResponseDTO> findAll();
 }

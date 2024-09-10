@@ -47,21 +47,24 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
 
     @Override
     public TeacherCalendarResponseDTO addTeacherCalendar(TeacherCalendarRequestDTO request) {
-        UUID teacherId = UUID.fromString(request.getIdTeacher());
-        LocalDate dateAppointment = LocalDate.parse(request.getDateAppointment());
+
+        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request, teacherCalendarMappingContext);
+
+        UUID teacherId = UUID.fromString(String.valueOf(request.getOwnerIds().get(0)));
+//        LocalDate dateAppointment = LocalDate.parse(request.getDateAppointment());
         LocalTime timeStart = LocalTime.parse(request.getTimeStart());
         LocalTime timeEnd = LocalTime.parse(request.getTimeEnd());
 
         TeacherEntity teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
-        if (teacherCalendarRepository.existsByTeacherAndDateAppointmentAndTimeStart(teacher, dateAppointment, timeStart)) {
+        if (teacherCalendarRepository.existsByTeacherAndDateAppointmentAndTimeStart(teacher, entity.getDateAppointment(), timeStart)) {
             throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
         } else {
-            if (dateAppointment.isBefore(LocalDate.now())) {
+            if (entity.getDateAppointment().isBefore(LocalDate.now())) {
                 throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
             }
 
-            if (dateAppointment.equals(LocalDate.now())) {
+            if (entity.getDateAppointment().equals(LocalDate.now())) {
                 if (timeStart.isBefore(LocalTime.now())) {
                     throw new AppException(ErrorCode.TIME_START_SUITABLE);
                 } else if (timeStart.until(timeEnd, ChronoUnit.MINUTES) != 10) {
@@ -70,9 +73,9 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
             }
         }
 
-        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request, teacherCalendarMappingContext);
+//        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request, teacherCalendarMappingContext);
         entity.setTeacher(teacher);
-        entity.setDateAppointment(dateAppointment);
+        entity.setDateAppointment(entity.getDateAppointment());
         TeacherCalendarEntity savedEntity = teacherCalendarRepository.save(entity);
         return teacherCalendarMapper.toTeacherCalendarResponseDTO(savedEntity);
     }
@@ -93,6 +96,14 @@ public class TeacherCalendarServiceImpl implements TeacherCalendarService {
             throw new AppException(ErrorCode.NAME_TEACHER_OR_TECHNICAL_AND_CURRENT_DATE_NOT_EXISTED);
         return teacherCalendars.stream()
                 .map(technicalTeacherMapper.INSTANCE::toTechnicalTeacherResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TeacherCalendarResponseDTO> findAll() {
+        List<TeacherCalendarEntity> teacherCalendars = teacherCalendarRepository.findAll();
+        return teacherCalendars.stream()
+                .map(teacherCalendarMapper::toTeacherCalendarResponseDTO)
                 .collect(Collectors.toList());
     }
 }
