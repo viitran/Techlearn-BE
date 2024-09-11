@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -98,5 +99,15 @@ public class TeacherCalendar2ServiceImpl implements TeacherCalendar2Service {
         TeacherCalendar savedEntity = teacherCalendarRepository.save(calendar);
 
         return teacherCalendarMapper.toDTO(savedEntity);
+    }
+
+    @Override
+    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id) {
+        UUID teacherId = UUID.fromString(id);
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
+        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacher(teacher);
+        return calendars.stream()
+                .map(teacherCalendarMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

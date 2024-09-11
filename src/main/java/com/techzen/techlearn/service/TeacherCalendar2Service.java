@@ -13,4 +13,6 @@ public interface TeacherCalendar2Service {
     void deleteTeacherCalendar(Integer id);
 
     TeacherCalendarResponseDTO2 updateCalendarTeacher(Integer id, TeacherCalendarRequestDTO2 request);
+
+    List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id);
 }
