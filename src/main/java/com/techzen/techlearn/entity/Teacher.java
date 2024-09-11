@@ -1,6 +1,9 @@
 package com.techzen.techlearn.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 import java.util.UUID;
 @Entity
 @Getter
@@ -9,17 +12,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "teacher")
-public class TeacherEntity {
+public class Teacher extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "name")
+
+    @Column(nullable = false)
     private String name;
-    @Column(name = "avatar")
-    private String avatar;
-    @Column(name = "color")
+
+    @Column(length = 7)
     private String color;
-    public TeacherEntity(UUID id) {
-        this.id = id;
-    }
+
+    @Column(columnDefinition = "TEXT")
+    private String avatar;
+
+    @OneToMany(mappedBy = "teacher")
+    private List<TeacherCalendar> teacherCalendars;
 }

@@ -3,9 +3,7 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.request.TeacherRequestDTO;
 import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.TeacherResponseDTO;
-import com.techzen.techlearn.dto.response.UserResponseDTO;
-import com.techzen.techlearn.entity.TeacherEntity;
-import com.techzen.techlearn.entity.UserEntity;
+import com.techzen.techlearn.entity.Teacher;
 import com.techzen.techlearn.mapper.TeacherMapper;
 import com.techzen.techlearn.repository.TeacherRepository;
 import com.techzen.techlearn.service.TeacherService;
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TeacherServiceImpl implements TeacherService {
 
+//    TeacherEntityRepository teacherRepository;
     TeacherRepository teacherRepository;
     TeacherMapper teacherMapper;
 
@@ -32,7 +31,7 @@ public class TeacherServiceImpl implements TeacherService {
     public PageResponse<?> findAll(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
-        Page<TeacherEntity> teachers = teacherRepository.findAll(pageable);
+        Page<Teacher> teachers = teacherRepository.findAll(pageable);
         List<TeacherResponseDTO> list = teachers.map(teacherMapper::toTeacherResponseDTO).stream().collect(Collectors.toList());
         return PageResponse.builder()
                 .page(page)
@@ -41,9 +40,16 @@ public class TeacherServiceImpl implements TeacherService {
                 .items(list)
                 .build();
     }
+
+    @Override
+    public List<TeacherResponseDTO> findAll() {
+        return teacherRepository.findAll().stream().map(teacherMapper::toTeacherResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public TeacherResponseDTO addTeacher(TeacherRequestDTO request) {
-        TeacherEntity teacher = teacherMapper.toTeacherEntity(request);
+        Teacher teacher = teacherMapper.toTeacherEntity(request);
 
         return teacherMapper.toTeacherResponseDTO(teacherRepository.save(teacher));
     }

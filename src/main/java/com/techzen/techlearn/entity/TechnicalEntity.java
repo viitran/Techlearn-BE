@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "technical_teacher")
-public class TechnicalEntity {
+public class TechnicalEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,6 @@ public class TechnicalEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_teacher", nullable = false)
-    private TeacherEntity teacherEntity;
+    private Teacher teacher;
 
 }
