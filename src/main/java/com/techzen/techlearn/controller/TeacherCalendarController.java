@@ -73,4 +73,9 @@ public class TeacherCalendarController {
                 .result("TeacherCalendar with ID " + id + " was successfully deleted.")
                 .build();
     }
+
+    @GetMapping("/find-by-id/{id}")
+    public List<TeacherCalendarResponseDTO2> findTeacherCalendarById(@PathVariable String id) {
+        return teacherCalendarService.findCalendarByTeacherId(id);
+    }
 }
