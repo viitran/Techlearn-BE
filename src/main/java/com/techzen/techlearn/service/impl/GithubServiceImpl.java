@@ -43,11 +43,11 @@ public class GithubServiceImpl implements GithubService {
 
     @Override
     public String reviewResponse(GithubResquestDTO resquestDTO) throws Exception {
-        var request = getContent(resquestDTO.getGithub_link());
+        var content = getContent(resquestDTO.getGithub_link());
         ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(request).replace("\"", "'");
-        var description = reviewConfigRepository.findTopByOrderByIdDesc().getPromptStructure();
-        String u = description + jsonString;
+        String jsonString = mapper.writeValueAsString(content).replace("\"", "'");
+        var description = reviewConfigRepository.findByActive().getPromptStructure();
+        //String request = description.replace("{exercise}",resquestDTO.getExerciseTitle()) + jsonString;
         return AIService.callAPI(description + jsonString);
     }
 

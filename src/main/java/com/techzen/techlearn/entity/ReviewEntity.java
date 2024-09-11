@@ -18,7 +18,7 @@ public class ReviewEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "NTEXT")
     private String content;
 
     @Column(name = "is_deleted")

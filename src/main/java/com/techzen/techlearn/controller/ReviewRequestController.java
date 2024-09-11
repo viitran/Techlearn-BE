@@ -20,17 +20,18 @@ public class ReviewRequestController {
     ReviewConfigService reviewConfigService;
 
     @GetMapping
-    public ResponseData<?> getConfig() {
+    public ResponseData<?> getAllConfig(@RequestParam(required = false, defaultValue = "1") int page,
+                                        @RequestParam(required = false, defaultValue = "10") int pageSize) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())
                 .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-                .result(reviewConfigService.getLatestConfig())
+                .result(reviewConfigService.getAllReviewConfig(page, pageSize))
                 .build();
     }
 
     @PostMapping
-    public ResponseData<?> saveConfig(@RequestBody @Valid ReviewConfigRequestDTO config) {
+    public ResponseData<?> addConfig(@RequestBody @Valid ReviewConfigRequestDTO config) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.ADD_SUCCESSFUL.getCode())
@@ -39,14 +40,34 @@ public class ReviewRequestController {
                 .build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseData<?> getConfigById(@PathVariable Long id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(reviewConfigService.getById(id))
+                .build();
+    }
+
     @PutMapping("/{id}")
     public ResponseData<?> updateConfig(@PathVariable Long id,
-                                           @RequestBody @Valid ReviewConfigRequestDTO config) {
+                                        @RequestBody @Valid ReviewConfigRequestDTO config) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
                 .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
                 .result(reviewConfigService.updateConfig(id, config))
+                .build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseData<?> updateConfigActive(@PathVariable Long id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
+                .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
+                .result(reviewConfigService.updateConfigActive(id))
                 .build();
     }
 }
