@@ -25,5 +25,8 @@ public class ReviewConfigEntity extends BaseEntity{
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
 }
 
