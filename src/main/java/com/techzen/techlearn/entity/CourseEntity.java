@@ -29,7 +29,7 @@ public class CourseEntity extends BaseEntity{
     private String description;
 
     @Column(name = "time")
-    private LocalDate time;
+    private String time;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
