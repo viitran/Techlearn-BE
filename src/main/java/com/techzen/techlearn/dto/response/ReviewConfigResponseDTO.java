@@ -15,5 +15,5 @@ import java.io.Serializable;
 public class ReviewConfigResponseDTO implements Serializable {
     Long id;
     String promptStructure;
-    String isActive;
+    Boolean isActive;
 }

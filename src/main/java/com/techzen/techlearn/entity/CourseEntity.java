@@ -1,10 +1,11 @@
 package com.techzen.techlearn.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,18 +28,14 @@ public class CourseEntity extends BaseEntity{
     @Column(name = "description", columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    private List<SubmitEntity> submissions;
-
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    private List<AssignmentEntity> assignments;
-
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    private List<ChapterEntity> chapters;
+    @Column(name = "time")
+    private LocalDate time;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    @ManyToMany()
+    @JoinTable(name = "tbl_user_course", joinColumns = @JoinColumn(name = "id_course"),
+            inverseJoinColumns = @JoinColumn(name = "id_user"))
+    List<UserEntity> userEntities = new ArrayList<>();
 }

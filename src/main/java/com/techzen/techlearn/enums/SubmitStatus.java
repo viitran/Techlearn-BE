@@ -4,5 +4,5 @@ public enum SubmitStatus {
     PENDING,
     PASS,
     FAIL,
-    REVIEWED
+    FIX_REVIEW
 }

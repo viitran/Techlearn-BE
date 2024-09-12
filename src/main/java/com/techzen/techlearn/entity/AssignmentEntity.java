@@ -27,27 +27,8 @@ public class AssignmentEntity extends BaseEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    private CourseEntity course;
-
-    @OneToMany(mappedBy = "assignment")
-    @JsonIgnore
-    private List<SubmitEntity> submissions;
-
-    @ManyToMany
-    @JoinTable(
-            name = "tbl_assignment_user",
-            joinColumns = @JoinColumn(name = "assignment_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    List<UserEntity> users;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chapter_id")
     private ChapterEntity chapter;
-
-    @OneToMany(mappedBy = "assignment")
-    @JsonIgnore
-    private List<SubmitFeedbackEntity> feedBacks;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
