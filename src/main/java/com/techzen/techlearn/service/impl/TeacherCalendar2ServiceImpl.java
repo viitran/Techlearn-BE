@@ -104,8 +104,8 @@ public class TeacherCalendar2ServiceImpl implements TeacherCalendar2Service {
     @Override
     public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id) {
         UUID teacherId = UUID.fromString(id);
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
-        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacher(teacher);
+      teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
+        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacherId(teacherId);
         return calendars.stream()
                 .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
