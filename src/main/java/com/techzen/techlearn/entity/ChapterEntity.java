@@ -21,22 +21,15 @@ public class ChapterEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "description", columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    @Column(name = "position")
-    private int position;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private CourseEntity course;
-
-    @OneToMany(mappedBy = "chapter")
-    @JsonIgnore
-    private List<AssignmentEntity> assignments;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

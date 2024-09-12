@@ -28,18 +28,10 @@ public class UserEntity extends BaseEntity {
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<SubmitEntity> submissions;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<SubmitFeedbackEntity> feedBacks;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "userEntities")
     @JsonIgnore
-    private List<AssignmentEntity> assignments;
+    private List<CourseEntity> courseEntities;
 }

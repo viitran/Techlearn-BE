@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,9 +13,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReviewResponseDTO implements Serializable {
     Long id;
-    String content;
-    String createdBy;
+    String review;
     LocalDateTime createdDate;
-    String modifiedBy;
-    LocalDateTime modifiedDate;
+    String status;
 }

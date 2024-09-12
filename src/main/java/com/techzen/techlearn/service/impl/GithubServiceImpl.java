@@ -9,6 +9,7 @@ import com.techzen.techlearn.mapper.GithubMapper;
 import com.techzen.techlearn.repository.ReviewConfigRepository;
 import com.techzen.techlearn.service.AIService;
 import com.techzen.techlearn.service.GithubService;
+import com.techzen.techlearn.service.SubmitionService;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class GithubServiceImpl implements GithubService {
     GithubMapper githubMapper;
     ReviewConfigRepository reviewConfigRepository;
     AIService AIService;
+    SubmitionService submitionService;
 
     @Override
     public String reviewResponse(GithubResquestDTO resquestDTO) throws Exception {
@@ -47,8 +49,10 @@ public class GithubServiceImpl implements GithubService {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(content).replace("\"", "'");
         var description = reviewConfigRepository.findByActive().getPromptStructure();
-        //String request = description.replace("{exercise}",resquestDTO.getExerciseTitle()) + jsonString;
-        return AIService.callAPI(description + jsonString);
+        String request = description.replace("{exercise}",resquestDTO.getExerciseTitle()) + jsonString;
+        var response = AIService.callAPI(request);
+        submitionService.addSubmit(resquestDTO.getGithub_link(), response);
+        return response;
     }
 
     private List<GithubResponseDTO> getContent(String linkGithub) {
