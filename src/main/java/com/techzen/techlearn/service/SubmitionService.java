@@ -13,5 +13,7 @@ public interface SubmitionService {
 
     PageResponse<?> getAllReviews(int page, int pageSize, UUID userId, long assignmentId);
 
+    PageResponse<?> getAllSubmitByStatus(int page, int pageSize, UUID userId, Long assignmentId, String status);
+
     ReviewResponseDTO getReviewById(long assignment, UUID id);
 }

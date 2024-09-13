@@ -26,8 +26,9 @@ public class AssignmentEntity extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "chapter_id")
+    @JsonIgnore
     private ChapterEntity chapter;
 
     @Column(name = "is_deleted")
