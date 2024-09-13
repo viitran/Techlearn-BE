@@ -33,7 +33,7 @@ public class SubmitionEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "assignment_id")
     private AssignmentEntity assignment;
 

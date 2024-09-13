@@ -2,11 +2,13 @@ package com.techzen.techlearn.service.impl;
 
 import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.ReviewResponseDTO;
+import com.techzen.techlearn.dto.response.SubmittionResponseDTO;
 import com.techzen.techlearn.entity.AssignmentEntity;
 import com.techzen.techlearn.entity.SubmitionEntity;
 import com.techzen.techlearn.entity.UserEntity;
 import com.techzen.techlearn.enums.SubmitStatus;
 import com.techzen.techlearn.mapper.ReviewMapper;
+import com.techzen.techlearn.mapper.SubmittionMapper;
 import com.techzen.techlearn.repository.AssignmentRepository;
 import com.techzen.techlearn.repository.SubmitionRepository;
 import com.techzen.techlearn.repository.UserRepository;
@@ -33,6 +35,7 @@ public class SubmitionServiceImpl implements SubmitionService {
     UserRepository userRepository;
     AssignmentRepository assignmentRepository;
     ReviewMapper reviewMapper;
+    SubmittionMapper submittionMapper;
 
     @Override
     public void addSubmit(String linkGithub, String resultReview) {
@@ -80,4 +83,28 @@ public class SubmitionServiceImpl implements SubmitionService {
         return reviewMapper.toReviewResponseDTO(
                 submitionRepository.findTopByAssignmentIdAndUserIdOrderByIdDesc(assignment, id));
     }
+    @Override
+    public PageResponse<?> getAllSubmitByStatus(int page, int pageSize, UUID userId, Long assignmentId, String status) {
+        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
+        SubmitStatus submitStatus =  SubmitStatus.valueOf(status);
+        List<SubmittionResponseDTO> list ;
+        Page<SubmitionEntity> reviews = submitionRepository
+                .findAllByUserIdAndStatus(pageable, userId,submitStatus);
+        if(assignmentId!=null){
+            list = reviews.stream()
+                    .filter(c -> c.getAssignment().getId()==assignmentId)
+                    .map(submittionMapper::toSubmittionResponseDTO)
+                    .collect(Collectors.toList());
+        } else {
+       list = reviews.map(submittionMapper::toSubmittionResponseDTO)
+                .stream().collect(Collectors.toList());}
+        return PageResponse.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .totalPage(reviews.getTotalPages())
+                .items(list)
+                .build();
+    }
+
+
 }
