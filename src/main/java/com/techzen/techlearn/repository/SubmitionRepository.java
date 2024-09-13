@@ -14,6 +14,5 @@ public interface SubmitionRepository extends JpaRepository<SubmitionEntity, Long
 
     Page<SubmitionEntity> findAllByAssignmentIdAndUserId(Pageable pageable, Long assignmentId, UUID userId);
     Page<SubmitionEntity> findAllByUserIdAndStatus(Pageable pageable, UUID userId, SubmitStatus status);
-
     SubmitionEntity findTopByAssignmentIdAndUserIdOrderByIdDesc(Long assignmentId, UUID userId);
 }
