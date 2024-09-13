@@ -1,6 +1,7 @@
 package com.techzen.techlearn.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.techzen.techlearn.enums.CalendarStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,4 +47,25 @@ public class TeacherCalendarResponseDTO2 implements Serializable {
 
     @JsonProperty("OwnerId")
     private String ownerId;
+
+    @JsonProperty("RecurrenceException")
+    private String recurrenceException;
+
+    @JsonProperty("RecurrenceID")
+    private String recurrenceID;
+
+    @JsonProperty("RecurrenceRule")
+    private String recurrenceRule;
+
+    @JsonProperty("Status")
+    private CalendarStatus status;
+
+    @JsonProperty("CourseId")
+    private String courseId;
+
+    @JsonProperty("ChapterId")
+    private String chapterId;
+
+    @JsonProperty("UserId")
+    private String userId;
 }

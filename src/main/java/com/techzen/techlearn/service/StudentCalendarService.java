@@ -1,10 +1,10 @@
 package com.techzen.techlearn.service;
 
-import com.techzen.techlearn.dto.request.StudentCalendarRequestDTO;
-import com.techzen.techlearn.dto.response.StudentCalendarResponseDTO;
+import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
+import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
 
 public interface StudentCalendarService {
-    StudentCalendarResponseDTO addStudentCalendar(StudentCalendarRequestDTO request);
+    TeacherCalendarResponseDTO2 addStudentCalendar(TeacherCalendarRequestDTO2 request);
 
     void deleteStudentById(Integer id);
 }

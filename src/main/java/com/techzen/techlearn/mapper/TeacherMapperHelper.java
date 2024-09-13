@@ -4,6 +4,10 @@ import com.techzen.techlearn.entity.Teacher;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.repository.TeacherRepository;
+import com.techzen.techlearn.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +15,11 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TeacherMapperHelper {
 
-    @Autowired
-    private TeacherRepository teacherRepository;
+    TeacherRepository teacherRepository;
 
     @Named("mapOwnerIdToTeacher")
     public Teacher mapOwnerIdToTeacher(String ownerId) {
