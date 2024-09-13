@@ -3,7 +3,7 @@ package com.techzen.techlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Getter
@@ -11,18 +11,17 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "technical_teacher")
-public class TechnicalEntity extends BaseEntity {
+@Table(name = "teacher_chapter")
+public class TeacherChapter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "id_teacher", nullable = false)
-    private Teacher teacher;
-
+    @JoinColumn(name = "technical_teacher_id", nullable = true)
+    private TechnicalTeacher technicalTeacher;
 }

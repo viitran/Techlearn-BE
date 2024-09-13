@@ -1,10 +1,12 @@
 package com.techzen.techlearn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
 import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Where(clause = "is_deleted = false")
 @Table(name = "tbl_user")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -28,4 +31,8 @@ public class UserEntity extends BaseEntity{
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    @ManyToMany(mappedBy = "userEntities")
+    @JsonIgnore
+    private List<CourseEntity> courseEntities;
 }
