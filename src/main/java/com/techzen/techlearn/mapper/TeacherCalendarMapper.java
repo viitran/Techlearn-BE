@@ -3,8 +3,7 @@ package com.techzen.techlearn.mapper;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
 import com.techzen.techlearn.entity.TeacherCalendar;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = {TeacherMapperHelper.class})
 public interface TeacherCalendarMapper {
@@ -17,6 +16,9 @@ public interface TeacherCalendarMapper {
     @Mapping(target = "ownerId", source = "teacher.id")
     @Mapping(target = "userId", source = "user.id")
     TeacherCalendarResponseDTO2 toDTO(TeacherCalendar teacherCalendar);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDTO(TeacherCalendarRequestDTO2 request, @MappingTarget TeacherCalendar entity);
 }
 
 

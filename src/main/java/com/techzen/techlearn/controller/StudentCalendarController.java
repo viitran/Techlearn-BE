@@ -3,14 +3,22 @@ package com.techzen.techlearn.controller;
 import com.techzen.techlearn.dto.request.StudentCalendarRequestDTO;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.ResponseData;
+import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.service.StudentCalendarService;
+import com.techzen.techlearn.service.TeacherCalendar2Service;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,9 +27,17 @@ import org.springframework.web.bind.annotation.*;
 public class StudentCalendarController {
 
     StudentCalendarService studentCalendarService;
+    TeacherCalendar2Service teacherCalendarService;
 
-    @PostMapping
-    public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) {
+    @GetMapping("/")
+    public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                         @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        return teacherCalendarService.findByDateRange(startDate, endDate);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) throws MessagingException, IOException {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.ADD_SUCCESSFUL.getCode())
