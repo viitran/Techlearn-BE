@@ -1,5 +1,6 @@
 package com.techzen.techlearn.entity;
 
+import com.techzen.techlearn.enums.CalendarStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -46,4 +47,18 @@ public class TeacherCalendar extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private Teacher teacher;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private CalendarStatus status;
+
+    @Column(name = "course_id")
+    private long courseId;
+
+    @Column(name = "chapter_id")
+    private long chapterId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
 }
