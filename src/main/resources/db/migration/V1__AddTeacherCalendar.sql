@@ -41,3 +41,14 @@ CREATE TABLE technical_teacher
     CONSTRAINT FOREIGN KEY (id_teacher) REFERENCES teacher(id)
 );
 
+CREATE TABLE teacher_chapter
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    technical_teacher_id INT,
+    created_by VARCHAR(255),
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_by VARCHAR(255),
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FOREIGN KEY (technical_teacher_id) REFERENCES technical_teacher(id)
+);
