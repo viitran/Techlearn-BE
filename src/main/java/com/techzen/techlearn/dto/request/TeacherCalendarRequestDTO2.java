@@ -1,6 +1,8 @@
 package com.techzen.techlearn.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.techzen.techlearn.entity.UserEntity;
+import com.techzen.techlearn.enums.CalendarStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,4 +53,16 @@ public class TeacherCalendarRequestDTO2 {
 
     @JsonProperty("RecurrenceRule")
     private String recurrenceRule;
+
+    @JsonProperty("Status")
+    private CalendarStatus status;
+
+    @JsonProperty("CourseId")
+    private String courseId;
+
+    @JsonProperty("ChapterId")
+    private String chapterId;
+
+    @JsonProperty("UserId")
+    private String userId;
 }

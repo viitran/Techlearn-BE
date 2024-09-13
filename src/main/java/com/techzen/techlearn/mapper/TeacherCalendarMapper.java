@@ -11,9 +11,11 @@ public interface TeacherCalendarMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "teacher", source = "ownerId", qualifiedByName = "mapOwnerIdToTeacher")
+    @Mapping(target = "status", source = "status")
     TeacherCalendar toEntity(TeacherCalendarRequestDTO2 request);
 
     @Mapping(target = "ownerId", source = "teacher.id")
+    @Mapping(target = "userId", source = "user.id")
     TeacherCalendarResponseDTO2 toDTO(TeacherCalendar teacherCalendar);
 }
 

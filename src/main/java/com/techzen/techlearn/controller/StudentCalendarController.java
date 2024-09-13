@@ -1,6 +1,7 @@
 package com.techzen.techlearn.controller;
 
 import com.techzen.techlearn.dto.request.StudentCalendarRequestDTO;
+import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.ResponseData;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.service.StudentCalendarService;
@@ -20,7 +21,7 @@ public class StudentCalendarController {
     StudentCalendarService studentCalendarService;
 
     @PostMapping
-    public ResponseData<?> addStudentCalendar(@RequestBody @Valid StudentCalendarRequestDTO request) {
+    public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.ADD_SUCCESSFUL.getCode())

@@ -48,7 +48,8 @@ public class TeacherCalendarController {
     @GetMapping("/")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return teacherCalendarService.findAll();
+
+        return teacherCalendarService.findByDateRange(startDate, endDate);
     }
 //
 //    @GetMapping("/students")
