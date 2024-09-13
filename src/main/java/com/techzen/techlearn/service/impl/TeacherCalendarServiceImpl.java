@@ -115,13 +115,29 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
         return teacherCalendarMapper.toDTO(savedEntity);
     }
 
+//    @Override
+//    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id) {
+//        UUID teacherId = UUID.fromString(id);
+//      teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
+//        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacherId(teacherId);
+//        return calendars.stream()
+//                .map(teacherCalendarMapper::toDTO)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
-    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id) {
-        UUID teacherId = UUID.fromString(id);
-      teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
-        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacherId(teacherId);
+    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(
+            String teacherName,
+            String technicalTeacherName,
+            String chapterName
+    ) {
+        List<TeacherCalendar> calendars = teacherCalendarRepository.findByFilters(
+                teacherName, technicalTeacherName, chapterName
+        );
+        System.out.println(calendars);
         return calendars.stream()
                 .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
 }

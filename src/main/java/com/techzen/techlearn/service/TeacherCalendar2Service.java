@@ -15,5 +15,6 @@ public interface TeacherCalendar2Service {
 
     TeacherCalendarResponseDTO2 updateCalendarTeacher(Integer id, TeacherCalendarRequestDTO2 request);
 
-    List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id);
+    List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String teacherName, String technicalTeacherName, String chapterName);
+
 }
