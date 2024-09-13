@@ -1,4 +1,3 @@
-
 ALTER TABLE tbl_course
     ADD COLUMN image VARCHAR(225) NULL;
 

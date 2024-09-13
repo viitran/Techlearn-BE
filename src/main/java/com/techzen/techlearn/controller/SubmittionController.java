@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/v1/Submittion")
+@RequestMapping("/api/v1/submitions")
 public class SubmittionController {
 
     SubmitionService submitionService;
@@ -28,7 +28,6 @@ public class SubmittionController {
                                         @RequestParam(required = false, defaultValue = "10") int pageSize,
                                         @RequestParam String id,
                                         @RequestParam(required = false) Long assignmentID,
-
                                         @RequestParam( defaultValue =  "PASS") String status
                                         ){
 

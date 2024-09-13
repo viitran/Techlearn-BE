@@ -1,6 +1,7 @@
 package com.techzen.techlearn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techzen.techlearn.enums.SubmitStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
@@ -25,6 +26,10 @@ public class AssignmentEntity extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private SubmitStatus status;
 
     @ManyToOne()
     @JoinColumn(name = "chapter_id")

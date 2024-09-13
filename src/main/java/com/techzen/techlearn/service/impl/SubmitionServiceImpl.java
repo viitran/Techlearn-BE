@@ -39,28 +39,30 @@ public class SubmitionServiceImpl implements SubmitionService {
 
     @Override
     public void addSubmit(String linkGithub, String resultReview) {
-        Optional<UserEntity> userEntity = Optional.of(userRepository.findUserById(
-                        UUID.fromString("2fac0e52-d9b1-4240-b29f-7ffbc4c2fa13"))
-                .orElseThrow(() -> new RuntimeException("User Not Found")));
-        Optional<AssignmentEntity> assignment = Optional.ofNullable(assignmentRepository.findById((long) 1)
-                .orElseThrow(() -> new RuntimeException("Assignment Not Found")));
+        UserEntity userEntity = userRepository.findUserById(
+                        UUID.fromString("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b"))
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        AssignmentEntity assignment = assignmentRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Assignment Not Found"));
         var submition = SubmitionEntity.builder()
                 .linkGithub(linkGithub)
                 .review(resultReview)
-                .user(userEntity.get())
+                .user(userEntity)
                 .isDeleted(false)
-                .assignment(assignment.get())
+                .assignment(assignment)
                 .build();
-        if(resultReview.contains("Pass")) {
+        if (resultReview.contains("Pass")) {
+            assignment.setStatus(SubmitStatus.PASS);
             submition.setStatus(SubmitStatus.PASS);
-        }
-        else if(resultReview.contains("Fail")) {
+        } else if (resultReview.contains("Fail")) {
+            assignment.setStatus(SubmitStatus.FIX_REVIEW);
             submition.setStatus(SubmitStatus.FIX_REVIEW);
-        }
-        else {
+        } else {
+            assignment.setStatus(SubmitStatus.PENDING);
             submition.setStatus(SubmitStatus.PENDING);
         }
         submitionRepository.save(submition);
+        assignmentRepository.save(assignment);
     }
 
     @Override
@@ -83,21 +85,23 @@ public class SubmitionServiceImpl implements SubmitionService {
         return reviewMapper.toReviewResponseDTO(
                 submitionRepository.findTopByAssignmentIdAndUserIdOrderByIdDesc(assignment, id));
     }
+
     @Override
     public PageResponse<?> getAllSubmitByStatus(int page, int pageSize, UUID userId, Long assignmentId, String status) {
         Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pageSize);
-        SubmitStatus submitStatus =  SubmitStatus.valueOf(status);
-        List<SubmittionResponseDTO> list ;
+        SubmitStatus submitStatus = SubmitStatus.valueOf(status);
+        List<SubmittionResponseDTO> list;
         Page<SubmitionEntity> reviews = submitionRepository
-                .findAllByUserIdAndStatus(pageable, userId,submitStatus);
-        if(assignmentId!=null){
+                .findAllByUserIdAndStatus(pageable, userId, submitStatus);
+        if (assignmentId != null) {
             list = reviews.stream()
-                    .filter(c -> c.getAssignment().getId()==assignmentId)
+                    .filter(c -> c.getAssignment().getId() == assignmentId)
                     .map(submittionMapper::toSubmittionResponseDTO)
                     .collect(Collectors.toList());
         } else {
-       list = reviews.map(submittionMapper::toSubmittionResponseDTO)
-                .stream().collect(Collectors.toList());}
+            list = reviews.map(submittionMapper::toSubmittionResponseDTO)
+                    .stream().collect(Collectors.toList());
+        }
         return PageResponse.builder()
                 .page(page)
                 .pageSize(pageSize)
