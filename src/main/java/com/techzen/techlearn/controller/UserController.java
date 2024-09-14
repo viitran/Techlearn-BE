@@ -88,9 +88,9 @@ public class UserController {
         try {
             CalendarDTO calendarDTO = CalendarDTO.builder()
                     .attendees(List.of("thanhtuanle0209@gmail.com"))  // Danh sách email người nhận
-                    .subject("Test send calendar mail")
-                    .description("Hello I'm Tuan dep trai nhat the gioi") // Mô tả của sự kiện
-                    .summary("Summary of the meeting")
+                    .subject("Thông báo lịch hỗ trợ online 1v1")
+                    .description("Chúng tôi xin thông báo rằng bạn đã đặt lịch hỗ trợ 1v1 online thành công. Đây là cơ hội để bạn được hỗ trợ trực tiếp bởi giảng viên/tư vấn viên của chúng tôi, giải đáp mọi thắc mắc và giúp bạn đạt được mục tiêu học tập của mình.") // Mô tả của sự kiện
+                    .summary("lịch hỗ trợ online 1v1 ")
                     .meetingLink("https://example.com/meeting")
                     .eventDateTime(LocalDateTime.now().plusMinutes(10)) // (10p sau) // LocalDateTime.of(2024, 09, 05, 14, 30)) Ngày cụ thể: 05/09/2024 lúc 14:30
                     .build();
