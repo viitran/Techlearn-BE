@@ -29,6 +29,7 @@ public class ChapterEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
+    @JsonIgnore
     private CourseEntity course;
 
     @Column(name = "is_deleted")

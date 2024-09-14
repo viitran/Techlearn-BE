@@ -22,7 +22,6 @@ public enum ErrorCode {
     UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
     INVALID_DATA(1014, "Invalid data", HttpStatus.BAD_REQUEST),
     REVIEW_NOT_FOUND(1020, "Review not found", HttpStatus.BAD_REQUEST),
-    INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
 
     // user code user : 110*
     USER_EXISTED(1101, "User existed", HttpStatus.BAD_REQUEST),
@@ -46,6 +45,8 @@ public enum ErrorCode {
 
     // error code Courser : 140*
     COURSE_NOT_FOUND(1401, "Course not found", HttpStatus.BAD_REQUEST),
+
+    INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
 
     // error code Teacher : 150*
     TEACHER_NOT_EXISTED(1015, "Teacher not existed", HttpStatus.NOT_FOUND),
