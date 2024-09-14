@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/v1/Course")
+@RequestMapping("/api/v1/courses")
 public class CourseController {
 
     CourseService courseService;
