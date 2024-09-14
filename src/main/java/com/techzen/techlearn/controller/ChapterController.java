@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/v1/Chapter")
+@RequestMapping("/api/v1/chapters")
 public class ChapterController {
     CourseService courseService;
     @GetMapping
