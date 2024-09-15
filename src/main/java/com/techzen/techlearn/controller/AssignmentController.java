@@ -34,4 +34,14 @@ public class AssignmentController {
                 .result(assignmentService.getAllAssignments(page, pageSize, courseId, userId, search, status))
                 .build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseData<?> getAssignmentById(@PathVariable long id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(assignmentService.getAssignmentById(id))
+                .build();
+    }
 }
