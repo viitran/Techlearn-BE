@@ -24,7 +24,7 @@ public class AssignmentEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "NTEXT")
     private String description;
 
     @Column(name = "status")
