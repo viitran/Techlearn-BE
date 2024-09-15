@@ -45,6 +45,7 @@ public enum ErrorCode {
 
     // error code Courser : 140*
     COURSE_NOT_FOUND(1401, "Course not found", HttpStatus.BAD_REQUEST),
+    ASSIGNMENT_NOT_FOUND(1402, "Assignment not found", HttpStatus.BAD_REQUEST),
 
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
 

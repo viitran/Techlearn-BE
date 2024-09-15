@@ -12,7 +12,6 @@ import com.techzen.techlearn.service.AssignmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +54,7 @@ public class AssigmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentResponseDTO getAssignmentById(Long id) {
         var assignment = assignmentRepository.findById(id).orElseThrow(() ->
-                new AppException(ErrorCode.REVIEW_NOT_FOUND));
+                new AppException(ErrorCode.ASSIGNMENT_NOT_FOUND));
         return assignmentMapper.toAssignmentResponseDTO(assignment);
     }
 }
