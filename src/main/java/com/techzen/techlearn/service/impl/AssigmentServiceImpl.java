@@ -3,7 +3,9 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.response.AssignmentResponseDTO;
 import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.entity.AssignmentEntity;
+import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.enums.SubmitStatus;
+import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.mapper.AssignmentMapper;
 import com.techzen.techlearn.repository.AssignmentRepository;
 import com.techzen.techlearn.service.AssignmentService;
@@ -47,5 +49,12 @@ public class AssigmentServiceImpl implements AssignmentService {
                 .totalPage(assignment.getTotalPages())
                 .items(list)
                 .build();
+    }
+
+    @Override
+    public AssignmentResponseDTO getAssignmentById(Long id) {
+        var assignment = assignmentRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.ASSIGNMENT_NOT_FOUND));
+        return assignmentMapper.toAssignmentResponseDTO(assignment);
     }
 }
