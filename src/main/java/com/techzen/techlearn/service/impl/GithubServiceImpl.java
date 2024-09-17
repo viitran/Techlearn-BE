@@ -51,7 +51,7 @@ public class GithubServiceImpl implements GithubService {
         var description = reviewConfigRepository.findByActive().getPromptStructure();
         String request = description.replace("{exercise}",resquestDTO.getExerciseTitle()) + jsonString;
         var response = AIService.callAPI(request);
-        submitionService.addSubmit(resquestDTO.getGithub_link(), response);
+        submitionService.addSubmit(resquestDTO.getGithub_link(), response, resquestDTO.getIdUser(), resquestDTO.getIdAssignment());
         return response;
     }
 

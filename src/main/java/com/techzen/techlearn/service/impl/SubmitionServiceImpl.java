@@ -38,11 +38,11 @@ public class SubmitionServiceImpl implements SubmitionService {
     SubmittionMapper submittionMapper;
 
     @Override
-    public void addSubmit(String linkGithub, String resultReview) {
+    public void addSubmit(String linkGithub, String resultReview, String id, String idAss) {
         UserEntity userEntity = userRepository.findUserById(
-                        UUID.fromString("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b"))
+                        UUID.fromString(id))
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
-        AssignmentEntity assignment = assignmentRepository.findById(1L)
+        AssignmentEntity assignment = assignmentRepository.findById(Long.valueOf(idAss))
                 .orElseThrow(() -> new RuntimeException("Assignment Not Found"));
         var submition = SubmitionEntity.builder()
                 .linkGithub(linkGithub)

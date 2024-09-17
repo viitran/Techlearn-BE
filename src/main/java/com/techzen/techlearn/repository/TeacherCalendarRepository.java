@@ -22,7 +22,7 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
             + "JOIN tc.teacher t "
             + "JOIN TechnicalTeacher tt ON t.id = tt.teacher.id "
             + "JOIN TeacherChapter tch ON tt.id = tch.technicalTeacher.id "
-            + "WHERE (:teacherName IS NULL OR t.name LIKE %:teacherName%) "
+            + "WHERE (:teacherName IS NULL OR t.name LIKE %:teacherName%)  AND tc.status = 'FREE'"
             + "AND (:technicalTeacherName IS NULL OR tt.name LIKE %:technicalTeacherName%) "
             + "AND (:chapterName IS NULL OR tch.name LIKE %:chapterName%)")
     List<TeacherCalendar> findByFilters(

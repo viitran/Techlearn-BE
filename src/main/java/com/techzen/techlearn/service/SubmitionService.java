@@ -9,7 +9,7 @@ import java.util.UUID;
 @Service
 public interface SubmitionService {
 
-    void addSubmit(String linkGithub, String resultReview);
+    void addSubmit(String linkGithub, String resultReview, String id, String idAss);
 
     PageResponse<?> getAllReviews(int page, int pageSize, UUID userId, long assignmentId);
 
