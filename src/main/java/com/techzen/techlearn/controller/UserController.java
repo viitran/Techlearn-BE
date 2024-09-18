@@ -1,6 +1,7 @@
 package com.techzen.techlearn.controller;
 
 import com.techzen.techlearn.dto.CalendarDTO;
+import com.techzen.techlearn.dto.request.RoleRequest;
 import com.techzen.techlearn.dto.request.UserRequestDTO;
 import com.techzen.techlearn.dto.response.ResponseData;
 import com.techzen.techlearn.enums.ErrorCode;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class UserController {
     MailService mailService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseData<?> getAllUser(@RequestParam(required = false, defaultValue = "1") int page,
                                       @RequestParam(required = false, defaultValue = "10") int pageSize) {
         return ResponseData.builder()
@@ -98,5 +101,13 @@ public class UserController {
         } catch (MessagingException | IOException e) {
             log.error("Error while sending email: {}", e.getMessage());
         }
+    }
+
+    @PostMapping("/{id}/add-roles")
+    public ResponseData<?> addRole(@PathVariable UUID id, @RequestBody RoleRequest roleRequest) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .result(userService.addRole(id, roleRequest.getRoles()))
+                .build();
     }
 }
