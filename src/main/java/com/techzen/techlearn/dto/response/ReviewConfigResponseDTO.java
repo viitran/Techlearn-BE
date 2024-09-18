@@ -7,18 +7,13 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TeacherCalendarResponseDTO implements Serializable {
-    String idTeacher;
-    String dateAppointment;
-    String timeStart;
-    String timeEnd;
-    String status;
-    String note;
+public class ReviewConfigResponseDTO implements Serializable {
+    Long id;
+    String promptStructure;
+    Boolean isActive;
 }

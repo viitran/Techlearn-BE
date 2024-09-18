@@ -1,35 +1,24 @@
 package com.techzen.techlearn.service.impl;
 
-import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO;
-import com.techzen.techlearn.dto.response.PageResponse;
-import com.techzen.techlearn.dto.response.TeacherCalendarFreeResponseDTO;
-import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO;
-import com.techzen.techlearn.dto.response.UserResponseDTO;
-import com.techzen.techlearn.dto.response.TechnicalTeacherResponseDTO;
-import com.techzen.techlearn.entity.TeacherCalendarEntity;
-import com.techzen.techlearn.entity.TeacherEntity;
-import com.techzen.techlearn.entity.UserEntity;
+import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
+import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
+import com.techzen.techlearn.entity.Teacher;
+import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.exception.AppException;
-import com.techzen.techlearn.mapper.ITeacherCalendarMapperFree;
-import com.techzen.techlearn.mapper.TeacherCalendarMappingContext;
 import com.techzen.techlearn.mapper.TeacherCalendarMapper;
-import com.techzen.techlearn.mapper.TechnicalTeacherMapper;
 import com.techzen.techlearn.repository.TeacherCalendarRepository;
 import com.techzen.techlearn.repository.TeacherRepository;
-import com.techzen.techlearn.service.TeacherCalendarService;
+import com.techzen.techlearn.service.TeacherCalendar2Service;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,62 +26,118 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TeacherCalendarServiceImpl implements TeacherCalendarService {
+public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
+
     TeacherCalendarRepository teacherCalendarRepository;
     TeacherCalendarMapper teacherCalendarMapper;
-    TeacherCalendarMappingContext teacherCalendarMappingContext;
     TeacherRepository teacherRepository;
-    ITeacherCalendarMapperFree iTeacherCalendarMapperFree;
-    TechnicalTeacherMapper technicalTeacherMapper;
 
     @Override
-    public TeacherCalendarResponseDTO addTeacherCalendar(TeacherCalendarRequestDTO request) {
-        UUID teacherId = UUID.fromString(request.getIdTeacher());
-        LocalDate dateAppointment = LocalDate.parse(request.getDateAppointment());
-        LocalTime timeStart = LocalTime.parse(request.getTimeStart());
-        LocalTime timeEnd = LocalTime.parse(request.getTimeEnd());
+    public List<TeacherCalendarResponseDTO2> addTeacherCalendar(TeacherCalendarRequestDTO2 request) {
 
-        TeacherEntity teacher = teacherRepository.findById(teacherId)
+        UUID teacherId = UUID.fromString(request.getOwnerId());
+        LocalDateTime timeStart = LocalDateTime.parse(request.getStartTime());
+        LocalDateTime timeEnd = LocalDateTime.parse(request.getEndTime());
+
+        Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
-        if (teacherCalendarRepository.existsByTeacherAndDateAppointmentAndTimeStart(teacher, dateAppointment, timeStart)) {
-            throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
-        } else {
-            if (dateAppointment.isBefore(LocalDate.now())) {
-                throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
-            }
 
-            if (dateAppointment.equals(LocalDate.now())) {
-                if (timeStart.isBefore(LocalTime.now())) {
-                    throw new AppException(ErrorCode.TIME_START_SUITABLE);
-                } else if (timeStart.until(timeEnd, ChronoUnit.MINUTES) != 10) {
-                    throw new AppException(ErrorCode.TIME_NOT_SUITABLE);
-                }
-            }
+        if (timeStart.isBefore(LocalDateTime.now())) {
+            throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
         }
 
-        TeacherCalendarEntity entity = teacherCalendarMapper.toTeacherCalendarEntity(request, teacherCalendarMappingContext);
-        entity.setTeacher(teacher);
-        entity.setDateAppointment(dateAppointment);
-        TeacherCalendarEntity savedEntity = teacherCalendarRepository.save(entity);
-        return teacherCalendarMapper.toTeacherCalendarResponseDTO(savedEntity);
-    }
+        List<TeacherCalendar> savedCalendars = new ArrayList<>();
+        LocalDateTime intervalStart = timeStart;
 
-    @Override
-    public List<TeacherCalendarFreeResponseDTO> getAllTeacherCalendar() {
-        List<Object[]> resultList = teacherCalendarRepository.findAllTeacherFree();
-        System.out.println(resultList);
-        return resultList.stream()
-                .map(iTeacherCalendarMapperFree::toTeacherCalendarFreeResponseDTO)
+        while (intervalStart.isBefore(timeEnd)) {
+            LocalDateTime intervalEnd = intervalStart.plusMinutes(10);
+
+            if (intervalEnd.isAfter(timeEnd)) {
+                intervalEnd = timeEnd;
+            }
+
+            if (teacherCalendarRepository.existsByTeacherAndStartTimeAndEndTime(teacher, intervalStart, intervalEnd)) {
+                throw new AppException(ErrorCode.TEACHER_CALENDAR_DATE_APPOINTMENT_EXISTED);
+            }
+
+            TeacherCalendar entity = teacherCalendarMapper.toEntity(request);
+            entity.setStartTime(intervalStart);
+            entity.setEndTime(intervalEnd);
+            entity.setTeacher(teacher);
+
+            TeacherCalendar savedEntity = teacherCalendarRepository.save(entity);
+            savedCalendars.add(savedEntity);
+
+            intervalStart = intervalEnd;
+        }
+
+        return savedCalendars.stream()
+                .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
+
     @Override
-    public List<TechnicalTeacherResponseDTO> findAppointments(String technicalName, String teacherName) {
-        List<TeacherCalendarEntity> teacherCalendars = teacherCalendarRepository.findAppointmentsByTechnicalAndTeacher(technicalName, teacherName);
-        if (teacherCalendars.isEmpty())
-            throw new AppException(ErrorCode.NAME_TEACHER_OR_TECHNICAL_AND_CURRENT_DATE_NOT_EXISTED);
-        return teacherCalendars.stream()
-                .map(technicalTeacherMapper.INSTANCE::toTechnicalTeacherResponseDTO)
+    public List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+        List<TeacherCalendar> entities = teacherCalendarRepository.findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(startDate, endDate);
+        return entities.stream().map(teacherCalendarMapper::toDTO).toList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteTeacherCalendar(Integer id) {
+        TeacherCalendar calendar = teacherCalendarRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
+
+        teacherCalendarRepository.delete(calendar);
+    }
+
+    @Override
+    public TeacherCalendarResponseDTO2 updateCalendarTeacher(Integer id, TeacherCalendarRequestDTO2 request) {
+        TeacherCalendar entity = teacherCalendarRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
+
+        UUID teacherId = UUID.fromString(request.getOwnerId());
+        LocalDateTime timeStart = LocalDateTime.parse(request.getStartTime());
+        LocalDateTime timeEnd = LocalDateTime.parse(request.getEndTime());
+
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
+
+        TeacherCalendar calendar = teacherCalendarMapper.toEntity(request);
+
+        calendar.setId(id);
+        calendar.setTeacher(teacher);
+        calendar.setStartTime(timeStart);
+        calendar.setEndTime(timeEnd);
+        TeacherCalendar savedEntity = teacherCalendarRepository.save(calendar);
+
+        return teacherCalendarMapper.toDTO(savedEntity);
+    }
+
+//    @Override
+//    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(String id) {
+//        UUID teacherId = UUID.fromString(id);
+//      teacherRepository.findById(teacherId).orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_EXISTED));
+//        List<TeacherCalendar> calendars = teacherCalendarRepository.findByTeacherId(teacherId);
+//        return calendars.stream()
+//                .map(teacherCalendarMapper::toDTO)
+//                .collect(Collectors.toList());
+//    }
+
+    @Override
+    public List<TeacherCalendarResponseDTO2> findCalendarByTeacherId(
+            String teacherName,
+            String technicalTeacherName,
+            String chapterName
+    ) {
+        List<TeacherCalendar> calendars = teacherCalendarRepository.findByFilters(
+                teacherName, technicalTeacherName, chapterName
+        );
+        System.out.println(calendars);
+        return calendars.stream()
+                .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
 }

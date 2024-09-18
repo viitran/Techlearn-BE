@@ -1,31 +1,24 @@
 package com.techzen.techlearn.mapper;
 
-import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO;
-import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO;
-import com.techzen.techlearn.entity.TeacherCalendarEntity;
-import com.techzen.techlearn.entity.TeacherEntity;
+import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
+import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
+import com.techzen.techlearn.entity.TeacherCalendar;
 import org.mapstruct.*;
 
-import java.util.UUID;
-
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TeacherMapperHelper.class})
 public interface TeacherCalendarMapper {
 
-    @Mappings({
-            @Mapping(target = "teacher", source = "idTeacher", qualifiedByName = "mapToTeacherEntity")
-    })
-    TeacherCalendarEntity toTeacherCalendarEntity(TeacherCalendarRequestDTO dto, @Context TeacherCalendarMappingContext context);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "teacher", source = "ownerId", qualifiedByName = "mapOwnerIdToTeacher")
+    @Mapping(target = "status", source = "status")
+    TeacherCalendar toEntity(TeacherCalendarRequestDTO2 request);
 
-    @Mappings({
-            @Mapping(target = "idTeacher", source = "teacher.id"),
-    })
-    TeacherCalendarResponseDTO toTeacherCalendarResponseDTO(TeacherCalendarEntity entity);
+    @Mapping(target = "ownerId", source = "teacher.id")
+    @Mapping(target = "userId", source = "user.id")
+    TeacherCalendarResponseDTO2 toDTO(TeacherCalendar teacherCalendar);
 
-    @Named("mapToTeacherEntity")
-    default TeacherEntity mapToTeacherEntity(String idTeacher, @Context TeacherCalendarMappingContext context) {
-        return context.getTeacherRepository().findById(UUID.fromString(idTeacher))
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
-    }
-
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDTO(TeacherCalendarRequestDTO2 request, @MappingTarget TeacherCalendar entity);
 }
+
 
