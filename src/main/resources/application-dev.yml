@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8181
 spring:
   config:
     activate:
@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/techlearn
     username: root
-    password: 12345
+    password: 123456
   jpa:
     hibernate:
       ddl-auto: validate
@@ -15,7 +15,26 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: thanhtuanle939@gmail.com
+    password: luts nmru gsio ljdv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   flyway:
     locations: classpath:/db/migration
     baseline-on-migrate: true
     baseline-version: 0
+
+application:
+  security:
+    jwt:
+      secret-key: 6250655368566B5970337336763979244226452948404D635166546A576E5A71
+      expiration: 86400000 # 1 day
+      refresh-token:
+        expiration: 604800000 # 7 days
