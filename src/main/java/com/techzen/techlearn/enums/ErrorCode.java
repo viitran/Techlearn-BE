@@ -22,7 +22,6 @@ public enum ErrorCode {
     UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
     INVALID_DATA(1014, "Invalid data", HttpStatus.BAD_REQUEST),
     REVIEW_NOT_FOUND(1020, "Review not found", HttpStatus.BAD_REQUEST),
-
     // user code user : 110*
     USER_EXISTED(1101, "User existed", HttpStatus.BAD_REQUEST),
     USERNAME_INVALID(1102, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
@@ -31,7 +30,7 @@ public enum ErrorCode {
     FULL_NAME_INVALID(1105, "Full name must be not blank", HttpStatus.BAD_REQUEST),
     AGE_INVALID(1106, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1107, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
-
+    INVALID_CREDENTIALS(1021, "Invalid credentials", HttpStatus.BAD_REQUEST),
 
     // prompt code prompt : 120*
     PROMPT_STRUCTURE(1201, "Prompt structure must be not blank", HttpStatus.BAD_REQUEST),
