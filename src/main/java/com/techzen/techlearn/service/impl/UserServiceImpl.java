@@ -3,10 +3,13 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.request.UserRequestDTO;
 import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.UserResponseDTO;
+import com.techzen.techlearn.entity.Role;
 import com.techzen.techlearn.entity.UserEntity;
 import com.techzen.techlearn.enums.ErrorCode;
+import com.techzen.techlearn.enums.RoleType;
 import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.mapper.UserMapper;
+import com.techzen.techlearn.repository.RoleRepository;
 import com.techzen.techlearn.repository.UserRepository;
 import com.techzen.techlearn.service.UserService;
 import lombok.AccessLevel;
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    RoleRepository roleRepository;
 
     @Override
     public UserResponseDTO getUserById(UUID id) {
@@ -71,5 +75,21 @@ public class UserServiceImpl implements UserService {
                 .totalPage(users.getTotalPages())
                 .items(list)
                 .build();
+    }
+
+    @Override
+    public UserResponseDTO addRole(UUID uniqueId, List<RoleType> roleTypes) {
+        UserEntity user = userRepository.findById(uniqueId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        roleTypes.forEach(roleType -> {
+            Role role = roleRepository.findByName(roleType)
+                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+            if (!user.getRoles().contains(role)) {
+                user.getRoles().add(role);
+            }
+        });
+
+        return userMapper.toUserResponseDTO(userRepository.save(user));
     }
 }

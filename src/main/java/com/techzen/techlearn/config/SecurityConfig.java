@@ -40,7 +40,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAuthority(RoleType.ADMIN.name())
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exp -> exp
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
                 .sessionManagement(manager -> manager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
