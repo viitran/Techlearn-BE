@@ -110,4 +110,14 @@ public class UserController {
                 .result(userService.addRole(id, roleRequest.getRoles()))
                 .build();
     }
+
+    @GetMapping("/me")
+    public ResponseData<?> retrieveUser() {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(userService.retrieveUser())
+                .build();
+    }
 }

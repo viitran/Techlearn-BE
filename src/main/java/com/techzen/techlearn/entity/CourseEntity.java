@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

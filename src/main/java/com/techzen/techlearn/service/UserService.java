@@ -24,4 +24,6 @@ public interface UserService {
     PageResponse<?> getAllUser(int page, int pageSize);
 
     UserResponseDTO addRole(UUID uniqueId, List<RoleType> roleTypes);
+
+    UserResponseDTO retrieveUser();
 }

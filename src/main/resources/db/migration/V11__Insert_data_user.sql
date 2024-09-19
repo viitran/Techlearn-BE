@@ -11,6 +11,7 @@ VALUES (UUID_TO_BIN(UUID()), 'system', NOW(), NOW(), 'system', 'Trần Sương',
        (UUID_TO_BIN(UUID()), 'system', NOW(), NOW(), 'system', 'Đạt Phan', 32, 'datphan1@gmail.com',
         '$2a$12$hSMTKrTDZjQtNvCJ0xBNdeJenSamThzjYS5k9hAliS/SvYUBk9fxy', 0);
 
+insert into tbl_roles (id, name) values (1, 'ADMIN'), (2, 'TEACHER'), (3, 'MENTOR'), (4, 'USER');
 
 -- add roles
 SET @user1_id = (SELECT id
