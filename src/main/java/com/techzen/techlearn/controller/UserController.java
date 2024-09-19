@@ -55,6 +55,16 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/access-token")
+    public ResponseData<?> getUserByAccessToken(@RequestParam String accessToken) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(userService.getUserEntityByAccessToken(accessToken))
+                .build();
+    }
+
     @PostMapping
     public ResponseData<?> addUser(@RequestBody @Valid UserRequestDTO request) {
         return ResponseData.builder()
