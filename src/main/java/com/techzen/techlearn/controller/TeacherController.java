@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class TeacherController {
     TeacherService teacherService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseData<?> findAll(@RequestParam(required = false, defaultValue = "1") int page,
-                                      @RequestParam(required = false, defaultValue = "10") int pageSize) {
+                                   @RequestParam(required = false, defaultValue = "10") int pageSize) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())
@@ -35,6 +37,7 @@ public class TeacherController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<TeacherResponseDTO> findAll() {
         return teacherService.findAll();
     }
