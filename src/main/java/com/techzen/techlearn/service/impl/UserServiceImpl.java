@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,5 +92,16 @@ public class UserServiceImpl implements UserService {
         });
 
         return userMapper.toUserResponseDTO(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponseDTO retrieveUser() {
+       var context = SecurityContextHolder.getContext();
+       String email = context.getAuthentication().getName();
+
+       UserEntity user = userRepository.findByEmail(email)
+               .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+       return userMapper.toUserResponseDTO(user);
     }
 }
