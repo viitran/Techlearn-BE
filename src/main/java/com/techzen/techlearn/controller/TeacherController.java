@@ -37,7 +37,7 @@ public class TeacherController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('USER')")
     public List<TeacherResponseDTO> findAll() {
         return teacherService.findAll();
     }

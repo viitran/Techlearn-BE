@@ -112,6 +112,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') or hasAuthority('TEACHER')")
     public ResponseData<?> retrieveUser() {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())

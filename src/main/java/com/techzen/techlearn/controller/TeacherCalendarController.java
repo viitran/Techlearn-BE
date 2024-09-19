@@ -26,7 +26,7 @@ public class TeacherCalendarController {
     TeacherCalendar2Service teacherCalendarService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     public ResponseData<?> addTeacherCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
@@ -37,7 +37,7 @@ public class TeacherCalendarController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseData<?> updateTeacherCalendar(@PathVariable Integer id,
                                                  @RequestBody @Valid TeacherCalendarRequestDTO2 request) {
         return ResponseData.builder()
@@ -49,7 +49,7 @@ public class TeacherCalendarController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
 
@@ -68,7 +68,7 @@ public class TeacherCalendarController {
 //    }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     public ResponseData<?> deleteTeacherCalendar(@PathVariable Integer id) {
         teacherCalendarService.deleteTeacherCalendar(id);
 
@@ -86,6 +86,7 @@ public class TeacherCalendarController {
 //    }
 
     @GetMapping("/find-calendars")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseData<List<TeacherCalendarResponseDTO2>> findCalendars(
             @RequestParam(required = false) String teacherName,
             @RequestParam(required = false) String technicalTeacherName,
@@ -100,5 +101,7 @@ public class TeacherCalendarController {
                 .result(calendars)
                 .build();
     }
+
+
 
 }
