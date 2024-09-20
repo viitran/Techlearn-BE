@@ -50,8 +50,9 @@ public class StudentCalendarController {
 
 
     @DeleteMapping("/{id}/calendar/{calendarId}")
-    public ResponseData<?> deleteStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId){
-        studentCalendarService.deleteStudentById(calendarId);
+    public ResponseData<?> deleteStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
+                                                 @PathVariable(name = "id") UUID id) {
+        studentCalendarService.deleteStudentById(id);
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())

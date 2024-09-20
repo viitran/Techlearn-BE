@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -50,9 +51,15 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
     @Override
     public TeacherCalendarResponseDTO2 createCalendar(TeacherCalendarRequestDTO2 request, UUID id) {
 
-//        UUID teacherId = UUID.fromString(request.getOwnerId());
         LocalDateTime timeStart = LocalDateTime.parse(request.getStartTime());
         LocalDateTime timeEnd = LocalDateTime.parse(request.getEndTime());
+
+        LocalDate dateStart = LocalDate.parse(request.getStartTime().substring(0, 10));
+        LocalDate dateEnd = LocalDate.parse(request.getEndTime().substring(0, 10));
+
+        if(dateStart.isBefore(LocalDate.now()) || dateEnd.isBefore(LocalDate.now())) {
+            throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
+        }
 
         TeacherCalendar entity = teacherCalendarMapper.toEntity(request);
 
@@ -69,10 +76,6 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
             entity.setMentor(mentor);
         } else {
             throw new AppException(ErrorCode.TEACHER_NOT_EXISTED);
-        }
-
-        if (timeStart.isBefore(LocalDateTime.now()) || timeEnd.isBefore(LocalDateTime.now())) {
-            throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
         }
 
         entity.setStartTime(timeStart);
