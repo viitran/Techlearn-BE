@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TeacherCalendar2Service {
-    List<TeacherCalendarResponseDTO2> addTeacherCalendar(TeacherCalendarRequestDTO2 request);
+    TeacherCalendarResponseDTO2 createCalendar(TeacherCalendarRequestDTO2 request, UUID id);
 
-    List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+    List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate, UUID id);
 
-    void deleteTeacherCalendar(Integer id);
+    void deleteTeacherCalendar(Integer id, UUID ownerId);
 
     TeacherCalendarResponseDTO2 updateCalendarTeacher(Integer id, TeacherCalendarRequestDTO2 request);
 

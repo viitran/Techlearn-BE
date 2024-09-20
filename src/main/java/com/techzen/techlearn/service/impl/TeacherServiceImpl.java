@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +51,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherResponseDTO addTeacher(TeacherRequestDTO request) {
         Teacher teacher = teacherMapper.toTeacherEntity(request);
+
+        if (teacher.getId() == null) {
+            teacher.setId(UUID.randomUUID());
+        }
 
         return teacherMapper.toTeacherResponseDTO(teacherRepository.save(teacher));
     }

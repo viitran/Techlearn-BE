@@ -23,20 +23,21 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/v1/student-calendar")
+@RequestMapping("/api/v1/student")
 public class StudentCalendarController {
 
     StudentCalendarService studentCalendarService;
     TeacherCalendar2Service teacherCalendarService;
 
-    @GetMapping("/")
+    @GetMapping("/{id}/calendar")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                         @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+                                                         @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+                                                         @PathVariable UUID id) {
 
-        return teacherCalendarService.findByDateRange(startDate, endDate);
+        return teacherCalendarService.findByDateRange(startDate, endDate, id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/calendar/{calendarId}")
     public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) throws MessagingException, IOException {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
