@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,17 +56,6 @@ public class TeacherCalendarController {
 
         return teacherCalendarService.findByDateRange(startDate, endDate);
     }
-//
-//    @GetMapping("/students")
-//    public ResponseData<?> getAppointmentsByTechnicalAndTeacher(@RequestParam String nameTechnical,
-//                                                                @RequestParam String nameTeacher) {
-//        return ResponseData.builder()
-//                .status(HttpStatus.OK.value())
-//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-//                .result(teacherCalendarService.findAppointments(nameTechnical, nameTeacher))
-//                .build();
-//    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -80,25 +70,19 @@ public class TeacherCalendarController {
                 .build();
     }
 
-//    @GetMapping("/find-by-id/{id}")
-//    public List<TeacherCalendarResponseDTO2> findTeacherCalendarById(@PathVariable String id) {
-//        return teacherCalendarService.findCalendarByTeacherId(id);
-//    }
-
-//    @GetMapping("/find-calendars")
-//    public ResponseData<List<TeacherCalendarResponseDTO2>> findCalendars(
-//            @RequestParam(required = false) String teacherName,
-//            @RequestParam(required = false) String technicalTeacherName,
-//            @RequestParam(required = false) String chapterName
-//    ) {
-//        List<TeacherCalendarResponseDTO2> calendars = teacherCalendarService.findCalendarByTeacherId(teacherName, technicalTeacherName, chapterName);
-//
-//        return ResponseData.<List<TeacherCalendarResponseDTO2>>builder()
-//                .status(HttpStatus.OK.value())
-//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-//                .result(calendars)
-//                .build();
-//    }
+    @GetMapping("/find-calendars")
+    public ResponseData<List<TeacherCalendarResponseDTO2>> findCalendars(
+            @RequestParam UUID uuid,
+            @RequestParam String technicalTeacherName,
+            @RequestParam String chapterName
+    ) {
+        List<TeacherCalendarResponseDTO2> calendars = teacherCalendarService.findCalendarByTeacherId(uuid, technicalTeacherName, chapterName);
+        return ResponseData.<List<TeacherCalendarResponseDTO2>>builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(calendars)
+                .build();
+    }
 
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface StudentCalendarService {
     TeacherCalendarResponseDTO2 addStudentCalendar(TeacherCalendarRequestDTO2 request) throws MessagingException, IOException;
 
-    void deleteStudentById(UUID id);
+    TeacherCalendarResponseDTO2 cancelCalendarStudentById(UUID id);
 
     List<TeacherCalendarResponseDTO2> getStudentCalendarsByUserId(UUID id);
 }

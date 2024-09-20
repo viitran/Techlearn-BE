@@ -1,6 +1,5 @@
 package com.techzen.techlearn.controller;
 
-import com.techzen.techlearn.dto.request.StudentCalendarRequestDTO;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.ResponseData;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
@@ -47,16 +46,15 @@ public class StudentCalendarController {
                 .build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseData<?> deleteStudentCalendar(@PathVariable UUID id){
-        studentCalendarService.deleteStudentById(id);
-        return ResponseData.builder()
-                .status(HttpStatus.OK.value())
-                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-                .result("StudentCalendar with ID " + id + " was successfully deleted.")
-                .build();
-    }
+//    @PutMapping("/{id}")
+//    public ResponseData<?> cancelStudentCalendar(@PathVariable UUID id){
+//        return ResponseData.builder()
+//                .status(HttpStatus.OK.value())
+//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+//                .result(studentCalendarService.cancelCalendarStudentById(id))
+//                .build();
+//    }
 
     @GetMapping("/{id}")
     public ResponseData<?> findAllCalendarStudent(@PathVariable UUID id){

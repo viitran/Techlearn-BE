@@ -18,17 +18,18 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
 
     List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(LocalDateTime startTime, LocalDateTime endTime);
 
-//    @Query("SELECT tc FROM TeacherCalendar tc "
-//            + "JOIN tc.teacher t "
-//            + "JOIN TechnicalTeacher tt ON t.id = tt.teacher.id "
-//            + "JOIN TeacherChapter tch ON tt.id = tch.technicalTeacher.id "
-//            + "WHERE (:teacherName IS NULL OR t.name LIKE %:teacherName%)  AND tc.status = 'FREE'"
-//            + "AND (:technicalTeacherName IS NULL OR tt.name LIKE %:technicalTeacherName%) "
-//            + "AND (:chapterName IS NULL OR tch.name LIKE %:chapterName%)")
-//    List<TeacherCalendar> findByFilters(
-//            @Param("teacherName") String teacherName,
-//            @Param("technicalTeacherName") String technicalTeacherName,
-//            @Param("chapterName") String chapterName
-//    );
+    @Query("SELECT tc FROM TeacherCalendar tc "
+            + "JOIN tc.teacher t ON tc.teacher.id = t.id "
+            + "JOIN TeacherCourse tcourse ON t.id = tcourse.teacher.id "
+            + "JOIN CourseEntity c ON tcourse.course.id = c.id "
+            + "JOIN ChapterEntity ch ON c.id = ch.course.id "
+            + "WHERE t.id = :uuid AND tc.status = 'FREE' "
+            + "AND c.name LIKE %:courseName% "
+            + "AND ch.name LIKE %:chapterName%")
+    List<TeacherCalendar> findByFilters(
+            @Param("uuid") UUID uuid,
+            @Param("courseName") String courseName,
+            @Param("chapterName") String chapterName
+    );
 
 }
