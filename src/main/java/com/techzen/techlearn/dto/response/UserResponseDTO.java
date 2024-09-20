@@ -21,4 +21,5 @@ public class UserResponseDTO implements Serializable {
     Integer age;
     String email;
     Set<Role> roles;
+    String avatar;
 }

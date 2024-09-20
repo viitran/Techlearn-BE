@@ -37,7 +37,7 @@ public class TeacherCalendarController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('ADMIN')")
     public ResponseData<?> updateTeacherCalendar(@PathVariable Integer id,
                                                  @RequestBody @Valid TeacherCalendarRequestDTO2 request) {
         return ResponseData.builder()
@@ -49,7 +49,7 @@ public class TeacherCalendarController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('USER')  or hasAuthority('ADMIN')")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
 
@@ -68,7 +68,7 @@ public class TeacherCalendarController {
 //    }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')  or hasAuthority('ADMIN')")
     public ResponseData<?> deleteTeacherCalendar(@PathVariable Integer id) {
         teacherCalendarService.deleteTeacherCalendar(id);
 
