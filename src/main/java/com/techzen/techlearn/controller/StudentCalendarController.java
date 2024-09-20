@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,13 +48,23 @@ public class StudentCalendarController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseData<?> deleteStudentCalendar(@PathVariable Integer id){
+    public ResponseData<?> deleteStudentCalendar(@PathVariable UUID id){
         studentCalendarService.deleteStudentById(id);
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())
                 .message(ErrorCode.GET_SUCCESSFUL.getMessage())
                 .result("StudentCalendar with ID " + id + " was successfully deleted.")
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseData<?> findAllCalendarStudent(@PathVariable UUID id){
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(studentCalendarService.getStudentCalendarsByUserId(id))
                 .build();
     }
 }
