@@ -3,7 +3,6 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.CalendarDTO;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
-import com.techzen.techlearn.entity.StudentCalendar;
 import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.entity.UserEntity;
 import com.techzen.techlearn.enums.CalendarStatus;
@@ -69,9 +68,11 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
     }
 
     @Override
-    public void deleteStudentById(UUID id) {
-//        StudentCalendar studentCalendar = studentCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
-//        studentCalendarRepository.delete(studentCalendar);
+    public TeacherCalendarResponseDTO2 cancelCalendarStudentById(UUID id) {
+        studentCalendarRepository.findIdUserCalendar(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
+        studentCalendarRepository.cancelByUserIdCalendar(id);
+        return null;
     }
 
     @Override
