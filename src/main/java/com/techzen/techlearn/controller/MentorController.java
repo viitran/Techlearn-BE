@@ -53,5 +53,16 @@ public class MentorController {
                 .result(mentorService.createMentor(request))
                 .build();
     }
+
+    @GetMapping("/chapter/{id}")
+    public ResponseData<?> filterMentorByChapter(@PathVariable Long id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(mentorService.filterMentorByChapter(id))
+                .build();
+    }
+
 }
 

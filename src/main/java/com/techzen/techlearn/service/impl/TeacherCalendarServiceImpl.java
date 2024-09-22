@@ -160,7 +160,9 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
         List<TeacherCalendar> calendars = teacherCalendarRepository.findByFilters(
                 uuid, technicalTeacherName, chapterName
         );
-        return calendars.stream()
+        if (calendars.isEmpty()) {
+            throw new AppException(ErrorCode.CALENDAR_NOT_EXISTED);
+        } else return calendars.stream()
                 .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
     }

@@ -9,4 +9,6 @@ public interface MentorService {
     MentorResponseDTO createMentor(MentorRequestDTO dto);
 
     List<MentorResponseDTO> findAllMentor();
+
+    List<MentorResponseDTO> filterMentorByChapter(Long id);
 }

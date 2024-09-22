@@ -4,6 +4,8 @@ import com.techzen.techlearn.dto.request.TeacherRequestDTO;
 import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.TeacherResponseDTO;
 import com.techzen.techlearn.entity.Teacher;
+import com.techzen.techlearn.enums.ErrorCode;
+import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.mapper.TeacherMapper;
 import com.techzen.techlearn.repository.TeacherRepository;
 import com.techzen.techlearn.service.TeacherService;
@@ -45,6 +47,16 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<TeacherResponseDTO> findAll() {
         return teacherRepository.findAll().stream().map(teacherMapper::toTeacherResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TeacherResponseDTO> filterTeacherByCourse(Long id) {
+        List<Teacher> teachers = teacherRepository.findTeacherByCourse(id);
+        if (teachers.isEmpty()) {
+            throw new AppException(ErrorCode.TEACHER_NOT_EXISTED);
+        } else return teachers.stream()
+                .map(teacherMapper::toTeacherResponseDTO)
                 .collect(Collectors.toList());
     }
 
