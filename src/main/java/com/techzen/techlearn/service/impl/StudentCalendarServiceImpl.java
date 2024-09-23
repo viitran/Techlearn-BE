@@ -3,7 +3,6 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.CalendarDTO;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
-import com.techzen.techlearn.entity.StudentCalendar;
 import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.entity.UserEntity;
 import com.techzen.techlearn.enums.CalendarStatus;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,10 +68,19 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
     }
 
     @Override
-    public void deleteStudentById(Integer id) {
-        StudentCalendar studentCalendar = studentCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
-        studentCalendarRepository.delete(studentCalendar);
+    public TeacherCalendarResponseDTO2 cancelCalendarStudentById(UUID id) {
+        studentCalendarRepository.findIdUserCalendar(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
+        studentCalendarRepository.cancelByUserIdCalendar(id);
+        return null;
     }
 
+    @Override
+    public List<TeacherCalendarResponseDTO2> getStudentCalendarsByUserId(UUID id) {
+        List<TeacherCalendar> calendars = studentCalendarRepository.findAllByUserCalendar(id);
+        return calendars.stream()
+                .map(teacherCalendarMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
 }

@@ -46,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or (hasAuthority('USER') and #id == principal.id)")
     public ResponseData<?> getUserById(@PathVariable UUID id) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())

@@ -51,7 +51,8 @@ public enum ErrorCode {
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
 
     // error code Teacher : 150*
-    TEACHER_NOT_EXISTED(1015, "Teacher not existed", HttpStatus.NOT_FOUND),
+    TEACHER_NOT_EXISTED(1505, "Teacher not existed", HttpStatus.NOT_FOUND),
+    MENTOR_NOT_EXISTED(1506, "Mentor not existed", HttpStatus.NOT_FOUND),
 
     // error code calendar : 160*
     TIME_NOT_SUITABLE(1016, "time start must time end equals ten minutes", HttpStatus.NOT_FOUND),
