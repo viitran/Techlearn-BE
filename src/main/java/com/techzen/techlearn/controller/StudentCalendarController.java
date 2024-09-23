@@ -49,17 +49,17 @@ public class StudentCalendarController {
 
 
 
-    @DeleteMapping("/{id}/calendar/{calendarId}")
-    public ResponseData<?> deleteStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
-                                                 @PathVariable(name = "id") UUID id) {
-        studentCalendarService.deleteStudentById(id);
-        return ResponseData.builder()
-                .status(HttpStatus.OK.value())
-                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-                .result("StudentCalendar with ID " + calendarId + " was successfully deleted.")
-                .build();
-    }
+//    @DeleteMapping("/{id}/calendar/{calendarId}")
+//    public ResponseData<?> deleteStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
+//                                                 @PathVariable(name = "id") UUID id) {
+//        studentCalendarService.deleteStudentById(id);
+//        return ResponseData.builder()
+//                .status(HttpStatus.OK.value())
+//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+//                .result("StudentCalendar with ID " + calendarId + " was successfully deleted.")
+//                .build();
+//    }
 
 //    @PutMapping("/{id}")
 //    public ResponseData<?> cancelStudentCalendar(@PathVariable UUID id){

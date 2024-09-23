@@ -3,6 +3,8 @@ package com.techzen.techlearn.service.impl;
 import com.techzen.techlearn.dto.request.MentorRequestDTO;
 import com.techzen.techlearn.dto.response.MentorResponseDTO;
 import com.techzen.techlearn.entity.Mentor;
+import com.techzen.techlearn.enums.ErrorCode;
+import com.techzen.techlearn.exception.AppException;
 import com.techzen.techlearn.mapper.MentorMapper;
 import com.techzen.techlearn.repository.MentorRepository;
 import com.techzen.techlearn.service.MentorService;
@@ -39,4 +41,15 @@ public class MentorServiceImpl implements MentorService {
         return mentorRepository.findAll().stream().map(mentorMapper::toTeacherResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<MentorResponseDTO> filterMentorByChapter(Long id) {
+        List<Mentor> mentors = mentorRepository.findMentorByChapter(id);
+        if (mentors.isEmpty()) {
+            throw new AppException(ErrorCode.MENTOR_NOT_EXISTED);
+        } else return mentors.stream()
+                    .map(mentorMapper::toTeacherResponseDTO)
+                    .collect(Collectors.toList());
+    }
+
 }

@@ -50,4 +50,14 @@ public class TeacherController {
                 .result(teacherService.addTeacher(request))
                 .build();
     }
+
+    @GetMapping("/course/{id}")
+    public ResponseData<?> filterTeacherByCourse(@PathVariable Long id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(teacherService.filterTeacherByCourse(id))
+                .build();
+    }
 }
