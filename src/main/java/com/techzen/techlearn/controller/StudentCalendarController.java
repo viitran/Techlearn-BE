@@ -29,7 +29,7 @@ public class StudentCalendarController {
     StudentCalendarService studentCalendarService;
     TeacherCalendar2Service teacherCalendarService;
 
-    @GetMapping("/{id}/calendar")
+    @GetMapping("/{id}/calendar/")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                                          @PathVariable UUID id) {
@@ -37,8 +37,9 @@ public class StudentCalendarController {
         return teacherCalendarService.findByDateRange(startDate, endDate, id);
     }
 
-    @PutMapping("/{id}/calendar/{calendarId}")
-    public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request) throws MessagingException, IOException {
+    @PostMapping("/{id}/calendar")
+    public ResponseData<?> addStudentCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request,
+                                              @PathVariable UUID id) throws MessagingException, IOException {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.ADD_SUCCESSFUL.getCode())

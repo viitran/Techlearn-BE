@@ -87,7 +87,6 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
         return teacherCalendarMapper.toDTO(savedEntity);
     }
 
-
     @Override
     public List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate, UUID id) {
         Teacher teacher;
@@ -107,7 +106,7 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
         } else {
             user = userRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-            entities = teacherCalendarRepository.findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUser(startDate, endDate, user);
+            entities = teacherCalendarRepository.findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUserAndStatus(startDate, endDate, user, CalendarStatus.BOOKED);
         }
 
         return entities.stream()
