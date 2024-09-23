@@ -34,7 +34,6 @@ public class UserController {
     MailService mailService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseData<?> getAllUser(@RequestParam(required = false, defaultValue = "1") int page,
                                       @RequestParam(required = false, defaultValue = "10") int pageSize) {
         return ResponseData.builder()
