@@ -33,6 +33,8 @@ public enum ErrorCode {
     INVALID_PASSWORD(1107, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
     INVALID_CREDENTIALS(1108, "Invalid credentials", HttpStatus.BAD_REQUEST),
     ROLE_NOT_FOUND(1109, "Role not found", HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(1110, "Invalid access token", HttpStatus.BAD_REQUEST),
+
 
     // prompt code prompt : 120*
     PROMPT_STRUCTURE(1201, "Prompt structure must be not blank", HttpStatus.BAD_REQUEST),
@@ -61,6 +63,9 @@ public enum ErrorCode {
     DATE_APPOINTMENT_NOT_SUITABLE(1019, "This smaller set date is now", HttpStatus.BAD_REQUEST),
     TIME_START_SUITABLE(1020, "This smaller set time is now", HttpStatus.BAD_REQUEST),
     CALENDAR_NOT_EXISTED(1021, "Calendar not existed", HttpStatus.NOT_FOUND),
+
+    //error code chapter
+    CHAPTER_NOT_EXISTED(1898, "Chapter not existed", HttpStatus.NOT_FOUND);
     ;
 
     Integer code;
