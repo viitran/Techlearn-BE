@@ -1,5 +1,6 @@
 package com.techzen.techlearn.controller;
 
+import com.techzen.techlearn.dto.request.MentorChapterRequestDTO;
 import com.techzen.techlearn.dto.request.MentorRequestDTO;
 import com.techzen.techlearn.dto.request.TeacherRequestDTO;
 import com.techzen.techlearn.dto.response.MentorResponseDTO;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,5 +66,35 @@ public class MentorController {
                 .build();
     }
 
+    @PostMapping("{mentor_id}/create-mentor-chapter/{chapter_id}")
+    public ResponseData<?> addMentorToChapter(@PathVariable UUID mentor_id, @PathVariable Long chapter_id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.ADD_SUCCESSFUL.getCode())
+                .message(ErrorCode.ADD_SUCCESSFUL.getMessage())
+                .result(mentorService.addMentorToChapter(mentor_id, chapter_id))
+                .build();
+    }
+
+    @PutMapping("/{mentor_id}/update-mentor-chapter/{chapter_id}")
+    public ResponseData<?> updateMentorToChapter(@PathVariable UUID mentor_id, @PathVariable Long chapter_id, @RequestBody @Valid MentorChapterRequestDTO request) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
+                .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
+                .result(mentorService.updateMentorToChapter(mentor_id, chapter_id, request))
+                .build();
+    }
+
+    @DeleteMapping("/{uuid}/delete-mentor-chapter/{id}")
+    public ResponseData<?> deleteMentorToChapter(@PathVariable UUID uuid, @PathVariable Long id) {
+        mentorService.deleteMentorToChapter(uuid, id);
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.DELETE_SUCCESSFUL.getCode())
+                .message(ErrorCode.DELETE_SUCCESSFUL.getMessage())
+                .result("Deleted mentor chapter by chapter_id " + id + "mentor_id " + uuid)
+                .build();
+    }
 }
 
