@@ -25,6 +25,17 @@ public class StructResponseServiceImpl implements StructResponseService {
     StructResponseAIMapper structResponseAIMapper;
 
 
+    public  void deleteStruct(Long idStruct){
+
+
+        try{
+        structResponseRepository.deleteById(idStruct);}
+        catch (Exception e){
+
+            throw new AppException(ErrorCode.STRUCT_RESPONSE_NOT_EXISTED);
+        }
+    }
+
     public List<StructResponseAIDTO> getAll() {
         return structResponseRepository.
                 findAll()
@@ -41,6 +52,9 @@ public class StructResponseServiceImpl implements StructResponseService {
     }
 
     public StructResponseAIDTO saveStructResponse(String contentStruct, String struct) {
+        if(contentStruct.trim().equals("")){
+            throw new AppException(ErrorCode.CONTENT_STRUCT_RESPONSE_NOT_NULL);
+        }
         try {
             struct = TypeStructResponseAI.valueOf(struct.toLowerCase()).getName();
         } catch (IllegalArgumentException e) {
@@ -56,6 +70,10 @@ public class StructResponseServiceImpl implements StructResponseService {
     }
 
     public StructResponseAIDTO updateStructResponse(String contentStruct, String struct, long idStruct) {
+
+        if(contentStruct.trim().equals("")){
+            throw new AppException(ErrorCode.CONTENT_STRUCT_RESPONSE_NOT_NULL);
+        }
         try {
             struct = TypeStructResponseAI.valueOf(struct.toLowerCase()).getName();
         } catch (IllegalArgumentException e) {

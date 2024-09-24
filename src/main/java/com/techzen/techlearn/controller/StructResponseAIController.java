@@ -3,6 +3,7 @@ package com.techzen.techlearn.controller;
 import com.techzen.techlearn.dto.response.ResponseData;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.service.impl.StructResponseServiceImpl;
+import com.techzen.techlearn.service.impl.TypeStructResponseServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class StructResponseAIController {
 
     StructResponseServiceImpl structResponseService;
+    TypeStructResponseServiceImpl typeStructResponseService;
 
     @GetMapping
     public ResponseData<?> getStructResponse() {
@@ -25,6 +27,15 @@ public class StructResponseAIController {
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())
                 .message(ErrorCode.GET_SUCCESSFUL.getMessage())
                 .result(structResponseService.getAll())
+                .build();
+    }
+    @GetMapping("type-struct")
+    public ResponseData<?> getAllTypeStruct() {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(typeStructResponseService.getListTypeStruct())
                 .build();
     }
     @GetMapping("{idStruct}")
@@ -67,4 +78,15 @@ public class StructResponseAIController {
                 .build();
 
     }
+    @DeleteMapping("{idStruct}")
+    public  ResponseData<?> deleteStruct(@PathVariable("idStruct") Long idStruct) {
+        structResponseService.deleteStruct(idStruct);
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .build();
+
+    }
+
 }
