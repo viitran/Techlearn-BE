@@ -4,6 +4,7 @@ import com.techzen.techlearn.entity.Mentor;
 import com.techzen.techlearn.entity.Teacher;
 import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.entity.UserEntity;
+import com.techzen.techlearn.enums.CalendarStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,7 +37,7 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
     );
 
     List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndMentor(LocalDateTime startTime, LocalDateTime endTime, Mentor mentor);
-    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUser(LocalDateTime startTime, LocalDateTime endTime, UserEntity user);
+    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUserAndStatus(LocalDateTime startTime, LocalDateTime endTime, UserEntity user, CalendarStatus status);
 
     Optional<TeacherCalendar> findByIdAndTeacher(Integer id, Teacher teacher);
 
