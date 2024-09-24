@@ -4,6 +4,8 @@ Alter table tbl_user
     add column is_mentor  bit(1) default 0,
     add column is_teacher bit(1) default 0;
 
+ALTER TABLE teacher
+    ADD COLUMN email VARCHAR(255) NOT NULL;
 
 INSERT INTO tbl_user (id, created_by, created_date, modified_date, modified_by, full_name, age, email, password, avatar,
                       is_deleted, is_mentor, is_teacher)

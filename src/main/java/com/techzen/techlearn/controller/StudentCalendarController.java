@@ -48,30 +48,16 @@ public class StudentCalendarController {
                 .build();
     }
 
-
-
-//    @DeleteMapping("/{id}/calendar/{calendarId}")
-//    public ResponseData<?> deleteStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
-//                                                 @PathVariable(name = "id") UUID id) {
-//        studentCalendarService.deleteStudentById(id);
-//        return ResponseData.builder()
-//                .status(HttpStatus.OK.value())
-//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-//                .result("StudentCalendar with ID " + calendarId + " was successfully deleted.")
-//                .build();
-//    }
-
-//    @PutMapping("/{id}")
-//    public ResponseData<?> cancelStudentCalendar(@PathVariable UUID id){
-//        return ResponseData.builder()
-//                .status(HttpStatus.OK.value())
-//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-//                .result(studentCalendarService.cancelCalendarStudentById(id))
-//                .build();
-//    }
-
+    @DeleteMapping("/{id}/calendar/{calendarId}")
+    public ResponseData<?> cancelStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
+                                                 @PathVariable(name = "id") UUID id) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
+                .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
+                .result(studentCalendarService.cancelCalendarStudentById(calendarId))
+                .build();
+    }
 
     @GetMapping("/{id}")
     public ResponseData<?> findAllCalendarStudent(@PathVariable UUID id){

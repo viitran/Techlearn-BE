@@ -17,8 +17,12 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     Optional<UserEntity> findByEmail(String email);
 
+
     @Query("SELECT u from UserEntity u " +
             " join Token t on t.user.id = u.id" +
             " where t.token = :accessToken")
     Optional<UserEntity> findUserEntityByAccessToken(@Param("accessToken") String accessToken);
+
+    @Query("SELECT ue.points from UserEntity ue WHERE ue.id =:idUser")
+    Integer getAllPointsById (UUID idUser);
 }

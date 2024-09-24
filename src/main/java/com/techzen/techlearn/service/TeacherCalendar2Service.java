@@ -12,6 +12,8 @@ public interface TeacherCalendar2Service {
 
     List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate, UUID id);
 
+    List<TeacherCalendarResponseDTO2> findByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+
     void deleteTeacherCalendar(Integer id, UUID ownerId);
 
     TeacherCalendarResponseDTO2 updateCalendarTeacher(Integer id, TeacherCalendarRequestDTO2 request);

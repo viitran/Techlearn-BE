@@ -40,13 +40,16 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "points")
+    private Integer points;
+
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "is_mentor",columnDefinition = "bit(1) default 0")
+    @Column(name = "is_mentor")
     private boolean isMentor;
 
-    @Column(name = "is_teacher",columnDefinition = "bit(1) default 0")
+    @Column(name = "is_teacher")
     private boolean isTeacher;
 
     @ManyToMany(mappedBy = "userEntities")

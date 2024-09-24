@@ -21,6 +21,12 @@ public class UserResponseDTO implements Serializable {
     String fullName;
     Integer age;
     String email;
+    Integer points;
+    String avatar;
+    @JsonProperty("isMentor")
+    boolean isMentor;
+    @JsonProperty("isTeacher")
+    boolean isTeacher;
     Set<Role> roles;
     String avatar;
     @JsonProperty("isMentor")

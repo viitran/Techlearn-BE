@@ -2,6 +2,7 @@ package com.techzen.techlearn.service;
 
 import com.techzen.techlearn.dto.response.CourseResponseDTO;
 import com.techzen.techlearn.dto.response.PageResponse;
+import com.techzen.techlearn.dto.response.TeacherResponseDTO;
 import com.techzen.techlearn.dto.response.UserResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,6 @@ public interface CourseService {
     CourseResponseDTO findCourseById(long id);
 
     List<UserResponseDTO> findUserByCourse(long id);
+
+    List<TeacherResponseDTO>  findTeacherByCourse(long id);
 }

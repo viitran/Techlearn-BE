@@ -26,6 +26,13 @@ public class TeacherCalendarController {
 
     TeacherCalendar2Service teacherCalendarService;
 
+    @GetMapping("/calendar/")
+    public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                         @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        return teacherCalendarService.findByDateRange(startDate, endDate);
+    }
+
     @PostMapping("/{id}/calendar")
     @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseData<?> addTeacherCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request, @PathVariable(name = "id") UUID id) {

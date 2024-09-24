@@ -57,4 +57,16 @@ public class CourseController {
                 .build();
 
     }
+
+    @GetMapping("/{id}/teachers")
+    public ResponseData<?> findTeacherByCourse(@PathVariable long id){
+
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(courseService.findTeacherByCourse(id))
+                .build();
+
+    }
 }

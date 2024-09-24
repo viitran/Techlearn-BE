@@ -26,7 +26,16 @@ public class Teacher extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String avatar;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "teacher")
     private List<TeacherCalendar> teacherCalendars;
 
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name = "teacher_course",
+            joinColumns=@JoinColumn(name="teacher_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="course_id", referencedColumnName = "id")
+    )
+    private List<CourseEntity> courses;
 }

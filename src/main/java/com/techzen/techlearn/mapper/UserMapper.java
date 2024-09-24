@@ -1,6 +1,7 @@
 package com.techzen.techlearn.mapper;
 
 import com.techzen.techlearn.dto.request.UserRequestDTO;
+import com.techzen.techlearn.dto.response.StudentCourseResponseDTO;
 import com.techzen.techlearn.dto.response.UserResponseDTO;
 import com.techzen.techlearn.entity.UserEntity;
 import org.mapstruct.Mapper;
@@ -17,5 +18,8 @@ public interface UserMapper {
     UserResponseDTO toUserResponseDTO(UserEntity userEntity);
 
     UserEntity toUserEntity(UserRequestDTO userRequestDTO);
+
+    @Mapping(source = "points", target = "points")
+    StudentCourseResponseDTO toStudentCourseResponseDTO(UserEntity userEntity);
 
 }
