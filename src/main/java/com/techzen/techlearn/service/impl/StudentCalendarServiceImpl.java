@@ -16,12 +16,16 @@ import com.techzen.techlearn.service.MailService;
 import com.techzen.techlearn.service.StudentCalendarService;
 import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -50,40 +54,69 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
     @Override
     public TeacherCalendarResponseDTO2 addStudentCalendar(TeacherCalendarRequestDTO2 request) throws MessagingException, IOException {
 
-       TeacherCalendar calendar = teacherCalendarMapper.toEntity(request);
+        LocalDate dateStart = LocalDate.parse(request.getStartTime().substring(0, 10));
+        LocalDate dateEnd = LocalDate.parse(request.getEndTime().substring(0, 10));
 
-       UUID ownerId = UUID.fromString(request.getOwnerId());
-       Teacher teacher;
-       Mentor mentor;
+        if (dateStart.isBefore(LocalDate.now()) || dateEnd.isBefore(LocalDate.now())) {
+            throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
+        }
 
-       if(isTeacher(ownerId)) {
-           teacher = teacherRepository.findById(ownerId).orElseThrow(
-                   () -> new AppException(ErrorCode.TEACHER_NOT_EXISTED)
-           );
-           calendar.setTeacher(teacher);
-         } else if(isMentor(ownerId)) {
-           mentor = mentorRepository.findById(ownerId).orElseThrow(
-                   () -> new AppException(ErrorCode.MENTOR_NOT_EXISTED)
-           );
-           calendar.setMentor(mentor);
+        if (dateStart.equals(LocalDate.now()) && dateEnd.equals(LocalDate.now())) {
+            if (dateStart.isBefore(LocalDate.now()) || dateEnd.isBefore(LocalDate.now())) {
+                throw new AppException(ErrorCode.DATE_APPOINTMENT_NOT_SUITABLE);
+            }
+        }
+
+        TeacherCalendar calendar = teacherCalendarMapper.toEntity(request);
+
+        UUID ownerId = UUID.fromString(request.getOwnerId());
+        Teacher teacher;
+        Mentor mentor;
+        List<String> recipientEmails = new ArrayList<>();
+
+        if (isTeacher(ownerId)) {
+            teacher = teacherRepository.findById(ownerId).orElseThrow(
+                    () -> new AppException(ErrorCode.TEACHER_NOT_EXISTED)
+            );
+            calendar.setTeacher(teacher);
+
+            recipientEmails.add(
+                    userRepository.findById(teacher.getId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)).getEmail()
+            );
+        } else if (isMentor(ownerId)) {
+            mentor = mentorRepository.findById(ownerId).orElseThrow(
+                    () -> new AppException(ErrorCode.MENTOR_NOT_EXISTED)
+            );
+            calendar.setMentor(mentor);
+
+            recipientEmails.add(
+                    userRepository.findById(mentor.getId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)).getEmail()
+            );
         }
 
         UserEntity user = userRepository.findUserById(UUID.fromString(request.getUserId())).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED)
         );
 
+        recipientEmails.add(
+                userRepository.findById(user.getId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)).getEmail()
+        );
+
         calendar.setStatus(CalendarStatus.BOOKED);
         calendar.setUser(user);
 
-//        CalendarDTO calendarDTO = CalendarDTO.builder()
-//                .attendees(List.of("tieuvi200904@gmail.com"))
-//                .subject("Thông báo lịch hỗ trợ online 1v1")
-//                .description("Chúng tôi xin thông báo rằng bạn đã đặt lịch hỗ trợ 1v1 online thành công. Đây là cơ hội để bạn được hỗ trợ trực tiếp bởi giảng viên/tư vấn viên của chúng tôi, giải đáp mọi thắc mắc và giúp bạn đạt được mục tiêu học tập của mình.") // Mô tả của sự kiện
-//                .summary("lịch hỗ trợ online 1v1 ")
-//                .meetingLink("https://example.com/meeting")
-//                .eventDateTime(LocalDateTime.now().plusMinutes(10)) // (10p sau) // LocalDateTime.of(2024, 09, 05, 14, 30)) Ngày cụ thể: 05/09/2024 lúc 14:30
-//                .build();
-//        gmailService.sendScheduleSuccessEmail(calendarDTO);
+        // send email
+        gmailService.sendEmails(
+                recipientEmails,
+                "Lịch đặt mới",
+                calendar.getTitle(),
+                calendar.getDescription(),
+                calendar.getStartTime(),
+                calendar.getEndTime(),
+                calendar.getDescription(),
+                "Tham gia cuộc họp",
+                "#3498db"  // Màu xanh
+        );
 
         return teacherCalendarMapper.toDTO(teacherCalendarRepository.save(calendar));
     }
@@ -93,8 +126,7 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
         TeacherCalendar calendar = studentCalendarRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED)
         );
-        calendar.setStatus(CalendarStatus.FREE);
-        calendar.setUser(null);
+        calendar.setStatus(CalendarStatus.CANCELLED);
         return teacherCalendarMapper.toDTO(studentCalendarRepository.save(calendar));
     }
 

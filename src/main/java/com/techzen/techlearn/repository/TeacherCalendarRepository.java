@@ -20,7 +20,9 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
     @Query("select tc from TeacherCalendar tc where tc.startTime >= current_time and tc.teacher.id = :id")
     List<TeacherCalendar> findByTeacherId(UUID id);
 
-    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndTeacher(LocalDateTime startTime, LocalDateTime endTime, Teacher teacher);
+    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, List<CalendarStatus> statuses);
+
+    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndTeacherAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, Teacher teacher, List<CalendarStatus> statuses);
 
     @Query("SELECT tc FROM TeacherCalendar tc "
             + "JOIN tc.teacher t ON tc.teacher.id = t.id "
@@ -36,8 +38,8 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
             @Param("chapterName") String chapterName
     );
 
-    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndMentor(LocalDateTime startTime, LocalDateTime endTime, Mentor mentor);
-    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUserAndStatus(LocalDateTime startTime, LocalDateTime endTime, UserEntity user, CalendarStatus status);
+    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndMentorAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, Mentor mentor, List<CalendarStatus> statuses);
+    List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUserAndStatusAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, UserEntity user, CalendarStatus status, List<CalendarStatus> statuses);
 
     Optional<TeacherCalendar> findByIdAndTeacher(Integer id, Teacher teacher);
 

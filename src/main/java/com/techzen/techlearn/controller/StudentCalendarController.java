@@ -48,13 +48,14 @@ public class StudentCalendarController {
                 .build();
     }
 
-    @PutMapping("/cancel-calendar/{id}")
-    public ResponseData<?> cancelStudentCalendar(@PathVariable Integer id){
+    @DeleteMapping("/{id}/calendar/{calendarId}")
+    public ResponseData<?> cancelStudentCalendar(@PathVariable(name = "calendarId") Integer calendarId,
+                                                 @PathVariable(name = "id") UUID id) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
                 .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
                 .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
-                .result(studentCalendarService.cancelCalendarStudentById(id))
+                .result(studentCalendarService.cancelCalendarStudentById(calendarId))
                 .build();
     }
 

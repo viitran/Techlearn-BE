@@ -14,4 +14,5 @@ public class TeacherRequestDTO {
     private String name;
     private String avatar;
     private String color;
+    private String email;
 }
