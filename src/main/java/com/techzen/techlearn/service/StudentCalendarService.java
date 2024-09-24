@@ -2,6 +2,7 @@ package com.techzen.techlearn.service;
 
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
+import com.techzen.techlearn.entity.TeacherCalendar;
 import jakarta.mail.MessagingException;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.UUID;
 public interface StudentCalendarService {
     TeacherCalendarResponseDTO2 addStudentCalendar(TeacherCalendarRequestDTO2 request) throws MessagingException, IOException;
 
-    TeacherCalendarResponseDTO2 cancelCalendarStudentById(UUID id);
+    TeacherCalendarResponseDTO2 cancelCalendarStudentById(Integer id);
 
     List<TeacherCalendarResponseDTO2> getStudentCalendarsByUserId(UUID id);
 }

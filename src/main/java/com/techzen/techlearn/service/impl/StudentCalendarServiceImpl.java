@@ -89,17 +89,21 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
     }
 
     @Override
-    public TeacherCalendarResponseDTO2 cancelCalendarStudentById(UUID id) {
-        studentCalendarRepository.findIdUserCalendar(id)
-                .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
-        studentCalendarRepository.cancelByUserIdCalendar(id);
-        return null;
+    public TeacherCalendarResponseDTO2 cancelCalendarStudentById(Integer id) {
+        TeacherCalendar calendar = studentCalendarRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED)
+        );
+        calendar.setStatus(CalendarStatus.FREE);
+        calendar.setUser(null);
+        return teacherCalendarMapper.toDTO(studentCalendarRepository.save(calendar));
     }
 
     @Override
     public List<TeacherCalendarResponseDTO2> getStudentCalendarsByUserId(UUID id) {
         List<TeacherCalendar> calendars = studentCalendarRepository.findAllByUserCalendar(id);
-        return calendars.stream()
+        if (calendars.isEmpty()) {
+            throw new AppException(ErrorCode.CALENDAR_NOT_EXISTED);
+        } else return calendars.stream()
                 .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
     }
