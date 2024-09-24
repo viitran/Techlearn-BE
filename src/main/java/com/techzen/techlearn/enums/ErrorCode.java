@@ -59,7 +59,10 @@ public enum ErrorCode {
     DATE_APPOINTMENT_NOT_SUITABLE(1019, "This smaller set date is now", HttpStatus.BAD_REQUEST),
     TIME_START_SUITABLE(1020, "This smaller set time is now", HttpStatus.BAD_REQUEST),
     CALENDAR_NOT_EXISTED(1021, "Calendar not existed", HttpStatus.NOT_FOUND),
-    ;
+
+    // error code StructResponseAI : 170*
+    STRUCT_RESPONSE_NOT_EXISTED(1701, "StructResponseAI not found", HttpStatus.NOT_FOUND),
+    TYPE_STRUCT_RESPONSE_NOT_EXISTED(1702, "Type StructResponseAI not found", HttpStatus.NOT_FOUND);
 
     Integer code;
     String message;
