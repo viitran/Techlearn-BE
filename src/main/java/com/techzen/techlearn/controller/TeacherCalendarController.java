@@ -27,7 +27,7 @@ public class TeacherCalendarController {
     TeacherCalendar2Service teacherCalendarService;
 
     @PostMapping("/{id}/calendar")
-    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('MENTOR')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseData<?> addTeacherCalendar(@RequestBody @Valid TeacherCalendarRequestDTO2 request, @PathVariable(name = "id") UUID id) {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
@@ -50,7 +50,7 @@ public class TeacherCalendarController {
     }
 
     @GetMapping("/{id}/calendar/")
-//    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('MENTOR')")
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('MENTOR') or hasAuthority('USER')")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                                          @PathVariable UUID id) {

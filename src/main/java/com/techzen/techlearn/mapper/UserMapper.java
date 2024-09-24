@@ -12,6 +12,8 @@ public interface UserMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "roles", target = "roles")
     @Mapping(source = "avatar", target = "avatar")
+    @Mapping(source = "mentor", target = "isMentor")
+    @Mapping(source = "teacher", target = "isTeacher")
     UserResponseDTO toUserResponseDTO(UserEntity userEntity);
 
     UserEntity toUserEntity(UserRequestDTO userRequestDTO);

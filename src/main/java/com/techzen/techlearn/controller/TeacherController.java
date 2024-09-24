@@ -25,7 +25,7 @@ public class TeacherController {
     TeacherService teacherService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('MENTOR') or hasAuthority('USER')")
     public ResponseData<?> findAll(@RequestParam(required = false, defaultValue = "1") int page,
                                    @RequestParam(required = false, defaultValue = "10") int pageSize) {
         return ResponseData.builder()
@@ -37,7 +37,7 @@ public class TeacherController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('MENTOR') or hasAuthority('USER')")
     public List<TeacherResponseDTO> findAll() {
         return teacherService.findAll();
     }

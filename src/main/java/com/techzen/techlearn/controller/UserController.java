@@ -122,7 +122,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('USER') or hasAuthority('MENTOR')")
     public ResponseData<?> retrieveUser() {
         return ResponseData.builder()
                 .status(HttpStatus.OK.value())
