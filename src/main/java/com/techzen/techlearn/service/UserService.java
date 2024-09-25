@@ -31,4 +31,6 @@ public interface UserService {
     UserResponseDTO retrieveUser();
 
     StudentCourseResponseDTO getAllPointsById (UUID idUser);
+
+    UserResponseDTO removeRoles(UUID id, List<RoleType> roles);
 }

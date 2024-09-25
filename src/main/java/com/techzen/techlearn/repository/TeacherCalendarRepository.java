@@ -17,6 +17,7 @@ import java.util.UUID;
 public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar, Integer> {
 
     boolean existsByTeacherAndStartTimeAndEndTime(Teacher teacher, LocalDateTime startTime, LocalDateTime endTime);
+
     @Query("select tc from TeacherCalendar tc where tc.startTime >= current_time and tc.teacher.id = :id")
     List<TeacherCalendar> findByTeacherId(UUID id);
 
@@ -39,10 +40,23 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
     );
 
     List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndMentorAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, Mentor mentor, List<CalendarStatus> statuses);
+
     List<TeacherCalendar> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqualAndUserAndStatusAndStatusIn(LocalDateTime startTime, LocalDateTime endTime, UserEntity user, CalendarStatus status, List<CalendarStatus> statuses);
 
     Optional<TeacherCalendar> findByIdAndTeacher(Integer id, Teacher teacher);
 
     Optional<TeacherCalendar> findByIdAndMentor(Integer id, Mentor mentor);
 
+    @Query("SELECT t " +
+            "FROM CourseEntity c " +
+            "JOIN c.listChapter ch " +
+            "JOIN c.teachers t " +
+            "JOIN t.teacherCalendars tc " +
+            "JOIN ch.mentors m " +
+            "WHERE c.id = :idCourse AND ch.id = :idChapter " +
+            "AND tc.startTime >= :startDate AND tc.endTime <= :endDate")
+    List<Object[]> findCourseChapterTeacherMentor(@Param("idCourse") Long idCourse,
+                                                  @Param("idChapter") Long idChapter,
+                                                  @Param("startDate") LocalDateTime startDate,
+                                                  @Param("endDate") LocalDateTime endDate);
 }
