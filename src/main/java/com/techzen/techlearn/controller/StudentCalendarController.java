@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -66,6 +67,16 @@ public class StudentCalendarController {
                 .code(ErrorCode.GET_SUCCESSFUL.getCode())
                 .message(ErrorCode.GET_SUCCESSFUL.getMessage())
                 .result(studentCalendarService.getStudentCalendarsByUserId(id))
+                .build();
+    }
+    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('USER')")
+    @PostMapping("/cancelBooking/{idBooking}")
+    public ResponseData<?> cancelBooking (@PathVariable Integer idBooking) {
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(studentCalendarService.cancelBooking(idBooking))
                 .build();
     }
 }
