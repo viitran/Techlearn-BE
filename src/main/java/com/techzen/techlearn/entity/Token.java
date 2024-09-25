@@ -1,5 +1,6 @@
 package com.techzen.techlearn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techzen.techlearn.enums.TokenType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,5 +29,6 @@ public class Token {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity user;
 }

@@ -133,7 +133,43 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
         TeacherCalendar calendar = studentCalendarRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED)
         );
-        calendar.setStatus(CalendarStatus.CANCELLED);
+
+        Teacher teacher = calendar.getTeacher();
+        Mentor mentor = calendar.getMentor();
+
+        UserEntity user = null;
+        if (calendar.getStatus().equals(CalendarStatus.BOOKED)){
+            calendar.setStatus(CalendarStatus.CANCELLED);
+            user = calendar.getUser();
+            user.setPoints(user.getPoints() + 1);
+            userRepository.save(user);
+        }
+
+        List<String> recipientEmails = new ArrayList<>();
+
+        if(teacher != null){
+            recipientEmails.add(teacher.getEmail());
+        } else if (mentor != null){
+            recipientEmails.add(mentor.getEmail());
+        }
+
+        recipientEmails.add(user.getEmail());
+        try {
+            gmailService.sendEmails(
+                    recipientEmails,
+                    "Lịch đã bị hủy bởi " + user.getEmail(),
+                    calendar.getTitle(),
+                    calendar.getDescription(),
+                    calendar.getStartTime(),
+                    calendar.getEndTime(),
+                    calendar.getDescription(),
+                    "Chi tiết",
+                    "#e74c3c"  // Màu đỏ
+            );
+        } catch (MessagingException e) {
+            throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);
+        }
+
         return teacherCalendarMapper.toDTO(studentCalendarRepository.save(calendar));
     }
 

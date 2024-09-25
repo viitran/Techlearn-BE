@@ -57,7 +57,6 @@ public class TeacherCalendarController {
     }
 
     @GetMapping("/{id}/calendar/")
-    @PreAuthorize("hasAuthority('TEACHER') or hasAuthority('MENTOR') or hasAuthority('USER')")
     public List<TeacherCalendarResponseDTO2> getSchedule(@RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                          @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                                          @PathVariable UUID id) {
@@ -94,16 +93,18 @@ public class TeacherCalendarController {
                 .build();
     }
 
-//    @GetMapping("/{idCourse}/chapters/{idChapter}")
-//    public ResponseData<Object> getCourseChapterTeacherMentor(
-//            @PathVariable Long idCourse,
-//            @PathVariable Long idChapter) {
-//        List<TeacherMentorCalendarResponseDTO> details = teacherCalendarService.findCourseChapterTeacherMentor(idCourse, idChapter);
-//        return ResponseData.builder()
-//                .status(HttpStatus.OK.value())
-//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-//                .result(details)
-//                .build();
-//    }
+    @GetMapping("/calendar/{idCourse}/chapter/{idChapter}/")
+    public ResponseData<Object> getCourseChapterTeacherMentor(
+            @PathVariable Long idCourse,
+            @PathVariable Long idChapter,
+            @RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        List<Object[]> details = teacherCalendarService.findCourseChapterTeacherMentor(idCourse, idChapter, startDate, endDate);
+        return ResponseData.builder()
+                .status(HttpStatus.OK.value())
+                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .result(details)
+                .build();
+    }
 }
