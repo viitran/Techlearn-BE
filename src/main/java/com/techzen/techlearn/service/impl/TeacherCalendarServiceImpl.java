@@ -14,7 +14,9 @@ import com.techzen.techlearn.repository.MentorRepository;
 import com.techzen.techlearn.repository.TeacherCalendarRepository;
 import com.techzen.techlearn.repository.TeacherRepository;
 import com.techzen.techlearn.repository.UserRepository;
+import com.techzen.techlearn.service.MailService;
 import com.techzen.techlearn.service.TeacherCalendar2Service;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +26,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +39,7 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
     TeacherRepository teacherRepository;
     UserRepository userRepository;
     MentorRepository mentorRepository;
+    MailService mailService;
 
     private boolean isTeacher(UUID id) {
         return teacherRepository.existsById(id);
@@ -132,7 +132,7 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
     public void deleteTeacherCalendar(Integer id, UUID ownerId) {
         Teacher teacher = teacherRepository.findById(ownerId).orElse(null);
         Mentor mentor = mentorRepository.findById(ownerId).orElse(null);
-        TeacherCalendar calendar;
+        TeacherCalendar calendar = null;
         if (teacher != null) {
             calendar = teacherCalendarRepository.findByIdAndTeacher(id, teacher)
                     .orElseThrow(() -> new AppException(ErrorCode.CALENDAR_NOT_EXISTED));
@@ -145,6 +145,26 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
 
             calendar.setStatus(CalendarStatus.CANCELLED);
             teacherCalendarRepository.save(calendar);
+        }
+
+        UserEntity user = calendar.getUser();
+        user.setPoints(user.getPoints() + 1);
+        userRepository.save(user);
+
+        try {
+            mailService.sendEmails(
+                    new ArrayList<>(Collections.singletonList(user.getEmail())),
+                    "Lịch hẹn đã bị hủy",
+                    calendar.getTitle(),
+                    calendar.getDescription(),
+                    calendar.getStartTime(),
+                    calendar.getEndTime(),
+                    calendar.getDescription(),
+                    "Chi tiết",
+                    "#e74c3c"  // Màu đỏ
+            );
+        } catch (MessagingException e) {
+            throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);
         }
     }
 
@@ -181,4 +201,8 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Object[]> findCourseChapterTeacherMentor(Long idCourse, Long idChapter, LocalDateTime startDate, LocalDateTime endDate) {
+        return teacherCalendarRepository.findCourseChapterTeacherMentor(idCourse, idChapter, startDate, endDate);
+    }
 }
