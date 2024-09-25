@@ -94,4 +94,16 @@ public class TeacherCalendarController {
                 .build();
     }
 
+//    @GetMapping("/{idCourse}/chapters/{idChapter}")
+//    public ResponseData<Object> getCourseChapterTeacherMentor(
+//            @PathVariable Long idCourse,
+//            @PathVariable Long idChapter) {
+//        List<TeacherMentorCalendarResponseDTO> details = teacherCalendarService.findCourseChapterTeacherMentor(idCourse, idChapter);
+//        return ResponseData.builder()
+//                .status(HttpStatus.OK.value())
+//                .code(ErrorCode.GET_SUCCESSFUL.getCode())
+//                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+//                .result(details)
+//                .build();
+//    }
 }
