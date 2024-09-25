@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherRequestDTO {
-    private String id;
-    private String name;
-    private String avatar;
-    private String color;
-    private String email;
+public class MentorChapterRequestDTO {
+    private String mentorId;
+    private String chapterId;
 }

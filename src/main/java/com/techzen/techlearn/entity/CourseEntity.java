@@ -50,4 +50,8 @@ public class CourseEntity extends BaseEntity{
     @JoinTable(name = "tbl_user_course", joinColumns = @JoinColumn(name = "id_course"),
             inverseJoinColumns = @JoinColumn(name = "id_user"))
     List<UserEntity> userEntities = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "courses")
+    List<Teacher> teachers = new ArrayList<>();
 }

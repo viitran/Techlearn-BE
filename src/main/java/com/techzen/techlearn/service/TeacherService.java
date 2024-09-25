@@ -5,6 +5,7 @@ import com.techzen.techlearn.dto.response.PageResponse;
 import com.techzen.techlearn.dto.response.TeacherResponseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TeacherService {
     TeacherResponseDTO addTeacher(TeacherRequestDTO request);
@@ -14,4 +15,6 @@ public interface TeacherService {
     List<TeacherResponseDTO> findAll();
 
     List<TeacherResponseDTO> filterTeacherByCourse(Long id);
+
+    void addTeacherToCourse(UUID teacherId, Long courseId);
 }
