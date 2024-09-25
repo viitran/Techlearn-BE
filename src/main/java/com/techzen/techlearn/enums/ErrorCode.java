@@ -65,8 +65,8 @@ public enum ErrorCode {
     CALENDAR_NOT_EXISTED(1021, "Calendar not existed", HttpStatus.NOT_FOUND),
 
     //error code chapter
-    CHAPTER_NOT_EXISTED(1898, "Chapter not existed", HttpStatus.NOT_FOUND);
-    ;
+    CHAPTER_NOT_EXISTED(1898, "Chapter not existed", HttpStatus.NOT_FOUND),
+    POINTS_NOT_ENOUGH(1022, "Points not enough", HttpStatus.BAD_REQUEST);
 
     Integer code;
     String message;

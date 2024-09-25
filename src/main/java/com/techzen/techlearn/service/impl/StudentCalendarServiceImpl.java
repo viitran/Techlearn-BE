@@ -15,6 +15,7 @@ import com.techzen.techlearn.repository.*;
 import com.techzen.techlearn.service.MailService;
 import com.techzen.techlearn.service.StudentCalendarService;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,7 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
         return mentorRepository.existsById(id);
     }
 
+    @Transactional
     @Override
     public TeacherCalendarResponseDTO2 addStudentCalendar(TeacherCalendarRequestDTO2 request) throws MessagingException, IOException {
 
@@ -102,7 +104,12 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
                 userRepository.findById(user.getId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)).getEmail()
         );
 
+        if (user.getPoints() <= 0) {
+            throw new AppException(ErrorCode.POINTS_NOT_ENOUGH);
+        }
+
         calendar.setStatus(CalendarStatus.BOOKED);
+        user.setPoints(user.getPoints() - 1);
         calendar.setUser(user);
 
         // send email
@@ -138,6 +145,25 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
         } else return calendars.stream()
                 .map(teacherCalendarMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public Integer cancelBooking(Integer bookingId) {
+        TeacherCalendar teacherCalendar = teacherCalendarRepository.findById(bookingId).orElseThrow(
+                ()-> new AppException(ErrorCode.CALENDAR_NOT_EXISTED)
+        );
+        if (teacherCalendar.getStatus().equals(CalendarStatus.BOOKED)){
+            teacherCalendar.setStatus(CalendarStatus.CANCELLED);
+            studentCalendarRepository.save(teacherCalendar);
+            UserEntity user = teacherCalendar.getUser();
+            user.setPoints(user.getPoints() + 1);
+            userRepository.save(user);
+            return user.getPoints();
+        }else {
+            throw new AppException(ErrorCode.CALENDAR_NOT_EXISTED);
+        }
+
     }
 
 }
