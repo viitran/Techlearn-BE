@@ -123,4 +123,20 @@ public class UserServiceImpl implements UserService {
                     .points(dto.getPoints())
                     .build();
     }
+
+    @Override
+    public UserResponseDTO removeRoles(UUID id, List<RoleType> roles) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        roles.forEach(roleType -> {
+            Role role = roleRepository.findByName(roleType)
+                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+            if (user.getRoles().contains(role)) {
+                user.getRoles().remove(role);
+            }
+        });
+
+        return userMapper.toUserResponseDTO(userRepository.save(user));
+    }
 }

@@ -68,7 +68,7 @@ public enum ErrorCode {
     CHAPTER_NOT_EXISTED(1898, "Chapter not existed", HttpStatus.NOT_FOUND),
     POINTS_NOT_ENOUGH(1022, "Points not enough", HttpStatus.BAD_REQUEST),
 
-    CANNOT_SEND_EMAIL(1023, "Cannot send mail", HttpStatus.INTERNAL_SERVER_ERROR);
+    CANNOT_SEND_EMAIL(1023, "Cannot send email", HttpStatus.INTERNAL_SERVER_ERROR);
 
     Integer code;
     String message;
