@@ -28,10 +28,5 @@ public class UserResponseDTO implements Serializable {
     @JsonProperty("isTeacher")
     boolean isTeacher;
     Set<Role> roles;
-    String avatar;
-    @JsonProperty("isMentor")
-    boolean isMentor;
-    @JsonProperty("isTeacher")
-    boolean isTeacher;
 
 }
