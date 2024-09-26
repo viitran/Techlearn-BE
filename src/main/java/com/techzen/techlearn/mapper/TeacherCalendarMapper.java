@@ -29,13 +29,6 @@ public interface TeacherCalendarMapper {
         }
         return null;
     }
-
-//    @Mapping(target = "courseName", source = "courseName")
-//    @Mapping(target = "teacherName", source = "teacherName")
-//    @Mapping(target = "chapterName", source = "chapterName")
-//    @Mapping(target = "mentorName", source = "mentorName")
-//    TeacherCalendar TeacherMentorCalendarResponseDTO(TeacherCalendarResponseDTO2 data);
-
 }
 
 

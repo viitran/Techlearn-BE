@@ -47,14 +47,17 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
 
     Optional<TeacherCalendar> findByIdAndMentor(Integer id, Mentor mentor);
 
-    @Query("SELECT t " +
+    @Query("SELECT tc " +
             "FROM CourseEntity c " +
             "JOIN c.listChapter ch " +
             "JOIN c.teachers t " +
             "JOIN t.teacherCalendars tc " +
             "JOIN ch.mentors m " +
-            "WHERE c.id = :idCourse AND ch.id = :idChapter " +
-            "AND tc.startTime >= :startDate AND tc.endTime <= :endDate")
+            "WHERE c.id = :idCourse " +
+            "AND ch.id = :idChapter " +
+            "AND tc.startTime >= :startDate " +
+            "AND tc.endTime <= :endDate " +
+            "AND (tc.status = 'BUSY' OR tc.status = 'BOOKED')" )
     List<Object[]> findCourseChapterTeacherMentor(@Param("idCourse") Long idCourse,
                                                   @Param("idChapter") Long idChapter,
                                                   @Param("startDate") LocalDateTime startDate,
