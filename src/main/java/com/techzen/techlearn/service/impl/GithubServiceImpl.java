@@ -55,7 +55,7 @@ public class GithubServiceImpl implements GithubService {
 //        System.out.println(mapper.writeValueAsString(content).replace("\"", "'"));
         String jsonString = mapper.writeValueAsString(content).replace("\"", "'");
         jsonString = jsonString.replace("{x}", "\\\"");
-        System.out.println(jsonString);
+//        System.out.println(jsonString);
         var description = reviewConfigRepository.findByActive().getPromptStructure();
         List<StructResponseAIDTO> listStruct  = structResponseService.getAll();
         String request = description.replace("{exercise}",resquestDTO.getExerciseTitle()) + jsonString;
@@ -64,11 +64,11 @@ public class GithubServiceImpl implements GithubService {
 
         for (int index = 0; index < sizeLoop; index++) {
             if (listStruct.get(index).getType().equals("language") && listStruct.get(index).getIsActive()) {
-                request = request.replace("{language}", listStruct.get(index).getContentStruct());
+                request = request.replace("{language}", listStruct.get(index).getContentStruct().trim());
             }
 
             if(listStruct.get(index).getType().equals("struct") && listStruct.get(index).getIsActive()){
-                request = request.replace("{struct}","  "+ listStruct.get(index).getContentStruct()  + ", {struct}");
+                request = request.replace("{struct}"," "+ listStruct.get(index).getContentStruct().trim()  + ", {struct}");
             }
             if(index == sizeLoop-1){
                 request = request.replace("{struct}", "");
@@ -77,8 +77,8 @@ public class GithubServiceImpl implements GithubService {
         }
 
 
-//        System.out.println(request.replace("\n",""));
-        var response = AIService.callAPI(request.replace("\n",""));
+        System.out.println("alooo :"+request);
+        var response = AIService.callAPI(request.replace("\n","").trim());
         submitionService.addSubmit(resquestDTO.getGithub_link(), response, resquestDTO.getIdUser(), resquestDTO.getIdAssignment());
         return response;
     }
