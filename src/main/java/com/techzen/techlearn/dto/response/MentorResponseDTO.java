@@ -15,4 +15,6 @@ public class MentorResponseDTO {
     private String email;
     private String avatar;
     private String color;
+    private boolean isMentor;
+    private boolean isTeacher;
 }
