@@ -58,7 +58,7 @@ public interface TeacherCalendarRepository extends JpaRepository<TeacherCalendar
             "AND tc.startTime >= :startDate " +
             "AND tc.endTime <= :endDate " +
             "AND (tc.status = 'BUSY' OR tc.status = 'BOOKED')" )
-    List<Object[]> findCourseChapterTeacherMentor(@Param("idCourse") Long idCourse,
+    List<TeacherCalendar> findCourseChapterTeacherMentor(@Param("idCourse") Long idCourse,
                                                   @Param("idChapter") Long idChapter,
                                                   @Param("startDate") LocalDateTime startDate,
                                                   @Param("endDate") LocalDateTime endDate);

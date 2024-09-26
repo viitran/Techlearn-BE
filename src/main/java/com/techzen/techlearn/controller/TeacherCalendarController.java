@@ -3,6 +3,7 @@ package com.techzen.techlearn.controller;
 import com.techzen.techlearn.dto.request.TeacherCalendarRequestDTO2;
 import com.techzen.techlearn.dto.response.ResponseData;
 import com.techzen.techlearn.dto.response.TeacherCalendarResponseDTO2;
+import com.techzen.techlearn.entity.TeacherCalendar;
 import com.techzen.techlearn.enums.ErrorCode;
 import com.techzen.techlearn.service.TeacherCalendar2Service;
 import jakarta.validation.Valid;
@@ -94,17 +95,12 @@ public class TeacherCalendarController {
     }
 
     @GetMapping("/calendar/{idCourse}/chapter/{idChapter}/")
-    public ResponseData<Object> getCourseChapterTeacherMentor(
+    public List<TeacherCalendarResponseDTO2> getCourseChapterTeacherMentor(
             @PathVariable Long idCourse,
             @PathVariable Long idChapter,
             @RequestParam("StartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam("EndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        List<Object[]> details = teacherCalendarService.findCourseChapterTeacherMentor(idCourse, idChapter, startDate, endDate);
-        return ResponseData.builder()
-                .status(HttpStatus.OK.value())
-                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
-                .result(details)
-                .build();
+
+        return teacherCalendarService.findCourseChapterTeacherMentor(idCourse, idChapter, startDate, endDate);
     }
 }
