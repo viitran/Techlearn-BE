@@ -122,7 +122,10 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
                 calendar.getEndTime(),
                 calendar.getDescription(),
                 "Tham gia cuộc họp",
-                "#3498db"  // Màu xanh
+                "#3498db",  // Màu xanh
+                calendar.getTeacher().getName(),
+                "lop abc",
+                "tong quan ve java"
         );
 
         return teacherCalendarMapper.toDTO(teacherCalendarRepository.save(calendar));
