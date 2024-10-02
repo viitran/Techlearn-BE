@@ -157,15 +157,10 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
                         new ArrayList<>(Collections.singletonList(user.getEmail())),
                         "Lịch hẹn đã bị hủy",
                         calendar.getTitle(),
-                        calendar.getDescription(),
-                        calendar.getStartTime(),
-                        calendar.getEndTime(),
                         calendar.getDescription(), // link gg meet
                         "Chi tiết",
                         "#e74c3c",// Màu đỏ
-                        calendar.getTeacher().getName(),
-                        "lop abc",
-                        "Tong quan ve Java"
+                        calendar
                 );
             } catch (MessagingException e) {
                 throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);

@@ -8,6 +8,9 @@ import biweekly.property.Method;
 import biweekly.property.Trigger;
 import biweekly.util.Duration;
 import com.techzen.techlearn.dto.CalendarDTO;
+import com.techzen.techlearn.entity.ChapterEntity;
+import com.techzen.techlearn.entity.TeacherCalendar;
+import com.techzen.techlearn.entity.TeacherCourse;
 import com.techzen.techlearn.service.MailService;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
@@ -38,6 +41,7 @@ import java.util.List;
 public class GmailServiceImpl implements MailService {
 
     JavaMailSender javaMailSender;
+
     @Override
     public void sendScheduleSuccessEmail(CalendarDTO calenderDto) throws MessagingException, IOException {
         // Send email
@@ -54,8 +58,7 @@ public class GmailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendEmails(List<String> recipientEmails, String subject, String title, String description,
-                           LocalDateTime startTime, LocalDateTime endTime, String actionUrl, String actionText, String primaryColor, String teacherName, String courseName, String chapterName) throws MessagingException {
+    public void sendEmails(List<String> recipientEmails, String subject, String title, String actionUrl, String actionText, String primaryColor, TeacherCalendar calendar) throws MessagingException {
         String htmlTemplate = """
                   <!DOCTYPE html>
                     <html lang="en">
@@ -93,6 +96,7 @@ public class GmailServiceImpl implements MailService {
                                 .event-details p {
                                   color: #666;
                                   margin: 10px 0;
+                                  font-size: 16px;
                                 }
                                 .event-time {
                                   font-weight: bold;
@@ -121,13 +125,12 @@ public class GmailServiceImpl implements MailService {
                           <h1>%2$s</h1>
                           <div class="event-details">
                               <h2>%3$s</h2>
-                              <p>Người tham gia: <b>%9$s</b></p>
-                              <p>Hỗ trợ khóa học: <b>%10$s</b> - Chương: <b>%11$s</b></p>
-                              <p>Ghi chú: %4$s</p>
-                              <p>Bắt đầu: <b>%5$s</b></p>
-                              <p>Kết thúc: <b>%6$s</b></p>
+                              <p><b>Người tham gia:</b> %4$s</p>
+                              <p><b>Ghi chú:</b> %5$s</p>
+                              <p><b>Bắt đầu:</b> %6$s</p>
+                              <p><b>Kết thúc:</b> %7$s</p>
                           </div>
-                          <a href="%7$s" class="btn">%8$s</a>
+                          <a href="%8$s" class="btn">%9$s</a>
                       </body>
                     </html>
                 """;
@@ -136,14 +139,13 @@ public class GmailServiceImpl implements MailService {
                 primaryColor,
                 subject,
                 title,
-                description,
-                startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                endTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                calendar.getTeacher().getName(),
+                calendar.getDescription() != null ? calendar.getDescription() : "Không có ghi chú",
+                calendar.getStartTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                calendar.getEndTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 actionUrl,
-                actionText,
-                teacherName,
-                courseName,
-                chapterName);
+                actionText);
+
 
         for (String recipientEmail : recipientEmails) {
             MimeMessage message = javaMailSender.createMimeMessage();
