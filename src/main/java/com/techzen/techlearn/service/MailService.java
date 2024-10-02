@@ -11,6 +11,5 @@ public interface MailService {
     void sendScheduleSuccessEmail(CalendarDTO calenderDto) throws MessagingException, IOException;
 
     void sendEmails(List<String> recipientEmails, String subject, String title, String description,
-                    LocalDateTime startTime, LocalDateTime endTime, String actionUrl, String actionText, String primaryColor) throws MessagingException;
-
+                    LocalDateTime startTime, LocalDateTime endTime, String actionUrl, String actionText, String primaryColor, String teacherName, String courseName, String chapterName) throws MessagingException;
 }

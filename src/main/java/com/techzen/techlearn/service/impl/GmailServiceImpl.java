@@ -55,34 +55,82 @@ public class GmailServiceImpl implements MailService {
 
     @Override
     public void sendEmails(List<String> recipientEmails, String subject, String title, String description,
-                           LocalDateTime startTime, LocalDateTime endTime, String actionUrl, String actionText, String primaryColor) throws MessagingException {
+                           LocalDateTime startTime, LocalDateTime endTime, String actionUrl, String actionText, String primaryColor, String teacherName, String courseName, String chapterName) throws MessagingException {
         String htmlTemplate = """
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Calendar Event Notification</title>
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #fff; max-width: 600px; margin: 0 auto; padding: 20px; }
-                    h1 { color: %1$s; }
-                    .event-details { background-color: #f9f9f9; border-left: 4px solid %1$s; padding: 15px; margin-bottom: 20px; }
-                    .event-time { font-weight: bold; color: %1$s; }
-                    .btn { display: inline-block; padding: 10px 20px; background-color: %1$s; color: #ffffff; text-decoration: none; border-radius: 5px; }
-                </style>
-            </head>
-            <body>
-                <h1>%2$s</h1>
-                <div class="event-details">
-                    <h2>%3$s</h2>
-                    <p>%4$s</p>
-                    <p class="event-time">Bắt đầu: %5$s</p>
-                    <p class="event-time">Kết thúc: %6$s</p>
-                </div>
-                <a href="%7$s" class="btn">%8$s</a>
-            </body>
-            </html>
-        """;
+                  <!DOCTYPE html>
+                    <html lang="en">
+                      <head>
+                        <meta charset="UTF-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Calendar Event Notification</title>
+                              <style>
+                                body {
+                                  font-family: Arial, sans-serif;
+                                  line-height: 1.6;
+                                  background-color: #f4f4f4;
+                                  max-width: 600px;
+                                  margin: 0 auto;
+                                  padding: 20px;
+                                  }
+                                h1 {
+                                  color: %1$s;
+                                  text-align: center;
+                                  font-size: 24px;
+                                }
+                                .event-details {
+                                  background-color: #ffffff;
+                                  border-left: 4px solid %1$s;
+                                  padding: 20px;
+                                  margin: 20px 0;
+                                  border-radius: 8px;
+                                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                }
+                                .event-details h2 {
+                                  color: #333;
+                                  font-size: 20px;
+                                  margin-top: 0;
+                                }
+                                .event-details p {
+                                  color: #666;
+                                  margin: 10px 0;
+                                }
+                                .event-time {
+                                  font-weight: bold;
+                                  color: %1$s;
+                                  font-size: 16px;
+                                }
+                                .btn {
+                                  display: inline-block;
+                                  padding: 12px 25px;
+                                  background-color: %1$s;
+                                  color: #ffffff !important;
+                                  text-decoration: none;
+                                  border-radius: 6px;
+                                  font-size: 16px;
+                                  text-align: center;
+                                  margin-top: 20px;
+                                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                  transition: background-color 0.3s ease;
+                                }
+                                .btn:hover {
+                                  background-color: #004080;
+                                }
+                              </style>
+                      </head>
+                      <body>
+                          <h1>%2$s</h1>
+                          <div class="event-details">
+                              <h2>%3$s</h2>
+                              <p>Người tham gia: <b>%9$s</b></p>
+                              <p>Hỗ trợ khóa học: <b>%10$s</b> - Chương: <b>%11$s</b></p>
+                              <p>Ghi chú: %4$s</p>
+                              <p>Bắt đầu: <b>%5$s</b></p>
+                              <p>Kết thúc: <b>%6$s</b></p>
+                          </div>
+                          <a href="%7$s" class="btn">%8$s</a>
+                      </body>
+                    </html>
+                """;
 
         String formattedHtml = String.format(htmlTemplate,
                 primaryColor,
@@ -92,7 +140,10 @@ public class GmailServiceImpl implements MailService {
                 startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 endTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 actionUrl,
-                actionText);
+                actionText,
+                teacherName,
+                courseName,
+                chapterName);
 
         for (String recipientEmail : recipientEmails) {
             MimeMessage message = javaMailSender.createMimeMessage();

@@ -164,7 +164,10 @@ public class StudentCalendarServiceImpl implements StudentCalendarService {
                     calendar.getEndTime(),
                     calendar.getDescription(),
                     "Chi tiết",
-                    "#e74c3c"  // Màu đỏ
+                    "#e74c3c",  // Màu đỏ
+                    calendar.getTeacher().getName(),
+                    "lop abc",
+                    "tong quan ve java"
             );
         } catch (MessagingException e) {
             throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);

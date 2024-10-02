@@ -160,9 +160,12 @@ public class TeacherCalendarServiceImpl implements TeacherCalendar2Service {
                         calendar.getDescription(),
                         calendar.getStartTime(),
                         calendar.getEndTime(),
-                        calendar.getDescription(),
+                        calendar.getDescription(), // link gg meet
                         "Chi tiết",
-                        "#e74c3c"  // Màu đỏ
+                        "#e74c3c",// Màu đỏ
+                        calendar.getTeacher().getName(),
+                        "lop abc",
+                        "Tong quan ve Java"
                 );
             } catch (MessagingException e) {
                 throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);
